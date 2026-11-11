@@ -3,6 +3,7 @@
   // document (tekst, PDF, Word) slepen: Rust leest de tekst eruit en die gaat mee met je vraag.
   // Onder het veld: welke bronnen Nook mag gebruiken en welk brein denkt (klik om een ander lokaal model te kiezen).
   import { api } from "../lib/api";
+  import { askedBefore } from "../lib/recall";
   import { brainApi, fileBase64, type Attachment, type ServerModel } from "../lib/brain";
   import { nook } from "../lib/state.svelte";
   import { attachments } from "../lib/attachments.svelte";
@@ -27,6 +28,27 @@
   let fileInput: HTMLInputElement;
   let brainRoot = $state<HTMLDivElement>();
 
+  // Up in an empty field brings back your previous question (again for older ones), Down goes forward again.
+  let recall = -1;
+  let recallFor: string | null = null;
+  $effect(() => {
+    if (nook.activeId !== recallFor) {
+      recallFor = nook.activeId;
+      recall = -1;
+    }
+  });
+  function recallQuestion(step: 1 | -1): boolean {
+    const history = askedBefore(nook.active?.messages ?? []);
+    if (!history.length) return false;
+    if (recall === -1 ? text.trim() !== "" || step === -1 : text !== history[recall]) return false;
+    const next = recall + step;
+    if (next >= history.length) return false;
+    recall = next;
+    text = next < 0 ? "" : history[next];
+    queueMicrotask(() => field?.setSelectionRange(text.length, text.length));
+    return true;
+  }
+
   export function focus() {
     field?.focus();
   }
@@ -49,6 +71,7 @@
     const attached = images.map(({ mediaType, base64 }) => ({ mediaType, base64 }));
     const file = attachment;
     text = "";
+    recall = -1;
     images = [];
     heard();
     attachment = null;
@@ -56,9 +79,20 @@
   }
 
   function key(e: KeyboardEvent) {
-    if (e.key === "Enter" && !e.shiftKey && !e.isComposing) {
+    if (e.isComposing) return;
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       send();
+    } else if ((e.key === "ArrowUp" || e.key === "ArrowDown") && !e.shiftKey && !e.altKey && !e.ctrlKey) {
+      const atStart = field.selectionStart === 0 && field.selectionEnd === 0;
+      const atEnd = field.selectionStart === text.length;
+      // While a recalled question is unchanged, Up and Down keep stepping through them wherever the caret is.
+      const stepping = recall >= 0;
+      if ((e.key === "ArrowUp" ? atStart || !text || stepping : atEnd || stepping) && recallQuestion(e.key === "ArrowUp" ? 1 : -1)) e.preventDefault();
+    } else if (e.key === "Escape" && !compact && nook.busy) {
+      // In the window Escape stops the answer; in the bar it keeps closing the bar.
+      e.preventDefault();
+      nook.stop();
     }
   }
 
@@ -146,11 +180,12 @@
       onpaste={paste}
       rows="1"
       aria-label="Message Nook"
+      oninput={() => (recall = -1)}
       placeholder={attachment ? `Ask about ${attachment.name}…` : "Ask Nook anything…"}
     ></textarea>
     <MicButton />
     {#if nook.busy}
-      <button class="ghost" onclick={() => nook.stop()} title="Stop response" aria-label="Stop response">■</button>
+      <button class="ghost" onclick={() => nook.stop()} title={compact ? "Stop response (Ctrl+.)" : "Stop response (Esc)"} aria-label="Stop response">■</button>
     {:else}
       <button class="primary" onclick={send} disabled={(!text.trim() && !attachment && !images.length) || reading} title="Send message (Enter)" aria-label="Send message"><Icon name="arrow" size={18} /></button>
     {/if}
