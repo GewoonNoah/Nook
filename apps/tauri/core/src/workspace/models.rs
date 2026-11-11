@@ -879,11 +879,13 @@ pub(crate) mod tests {
     #[test]
     fn worktree_path_avoids_existing() {
         let existing = std::cell::RefCell::new(std::collections::HashSet::new());
+        // Built with `join`, like `worktree_path`: Windows joins with `\`, so a literal "/r/my-repo/task" would not match.
+        let expected = |name: &str| std::path::Path::new("/r").join("my-repo").join(name).to_string_lossy().into_owned();
         let first = worktree_path("/r", "My Repo", "task", |p| existing.borrow().contains(p));
-        assert_eq!(first, std::path::Path::new("/r/my-repo/task").to_string_lossy());
+        assert_eq!(first, expected("task"));
         existing.borrow_mut().insert(first);
         let second = worktree_path("/r", "My Repo", "task", |p| existing.borrow().contains(p));
-        assert_eq!(second, std::path::Path::new("/r/my-repo/task-2").to_string_lossy());
+        assert_eq!(second, expected("task-2"));
     }
 
     #[test]

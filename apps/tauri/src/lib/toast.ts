@@ -3,11 +3,18 @@
 
 export type ToastKind = "success" | "error" | "warning" | "info";
 
+/// One button on a toast that undoes or follows up what just happened ("Ongedaan maken").
+export interface ToastAction {
+  label: string;
+  run: () => void;
+}
+
 export interface Toast {
   id: number;
   kind: ToastKind;
   title: string;
   detail?: string;
+  action?: ToastAction;
 }
 
 /// How long a toast stays by itself: an error is read more slowly than a confirmation.
@@ -22,10 +29,10 @@ export class ToastQueue {
 
   constructor(private readonly changed: (current: Toast | null) => void = () => {}) {}
 
-  show(title: string, kind: ToastKind = "info", detail?: string) {
+  show(title: string, kind: ToastKind = "info", detail?: string, action?: ToastAction) {
     const text = title.trim();
     if (!text) return;
-    const toast: Toast = { id: this.nextId++, kind, title: text, detail: detail?.trim() || undefined };
+    const toast: Toast = { id: this.nextId++, kind, title: text, detail: detail?.trim() || undefined, action };
     const same = (other: Toast) => other.kind === toast.kind && other.title === toast.title && other.detail === toast.detail;
     if (this.current && same(this.current)) {
       this.left = TOAST_SECONDS[kind];
@@ -43,6 +50,13 @@ export class ToastQueue {
     if (this.left <= 0) this.dismiss();
   }
 
+  /// Runs the current toast's button once, then closes it.
+  act() {
+    const action = this.current?.action;
+    this.dismiss();
+    action?.run();
+  }
+
   /// Closes the current toast and shows the next one waiting.
   dismiss() {
     const next = this.waiting.shift() ?? null;
@@ -55,7 +69,8 @@ export class ToastQueue {
 
   private present(toast: Toast) {
     this.current = toast;
-    this.left = TOAST_SECONDS[toast.kind];
+    // A toast with a button stays a little longer, so there is time to reach it.
+    this.left = TOAST_SECONDS[toast.kind] + (toast.action ? 3 : 0);
     this.changed(toast);
   }
 }
