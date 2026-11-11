@@ -106,6 +106,8 @@ pub struct Settings {
     pub energy_mode: EnergyMode,
     /// Autocomplete Anywhere (Settings › Autocomplete). Off by default.
     pub autocomplete: AutocompleteSettings,
+    /// The one-time note that closing the main window keeps Nook running in the tray was shown.
+    pub tray_hint_shown: bool,
 }
 
 impl Default for Settings {
@@ -153,6 +155,7 @@ impl Default for Settings {
             show_in_screenshots: false,
             energy_mode: EnergyMode::Automatic,
             autocomplete: AutocompleteSettings::default(),
+            tray_hint_shown: false,
         }
     }
 }
