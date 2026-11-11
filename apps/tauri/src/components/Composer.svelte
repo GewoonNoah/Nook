@@ -56,7 +56,8 @@
   }
 
   function key(e: KeyboardEvent) {
-    if (e.key === "Enter" && !e.shiftKey && !e.isComposing) {
+    // Ctrl+Enter belongs to a plan waiting for approval (it runs the plan), not to the field.
+    if (e.key === "Enter" && !e.shiftKey && !e.ctrlKey && !e.metaKey && !e.isComposing) {
       e.preventDefault();
       send();
     }
