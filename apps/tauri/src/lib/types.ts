@@ -57,6 +57,7 @@ export interface Settings {
   energyMode: EnergyMode;
   /// Autocomplete Anywhere (Settings › Aanvullen). Off by default.
   autocomplete: AutocompleteSettings;
+  mainWindow: { x: number; y: number; width: number; height: number; maximized: boolean } | null;
 }
 
 /// What Nook does while you share your screen or sit in a meeting.
