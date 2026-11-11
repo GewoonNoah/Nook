@@ -104,6 +104,7 @@ pub fn run() {
             commands::show_main,
             commands::bar_moved,
             commands::take_route,
+            commands::tray_status,
             commands::companion::companion_info,
             commands::companion::companion_set_enabled,
             commands::companion::companion_begin_pairing,

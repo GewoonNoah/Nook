@@ -39,6 +39,7 @@ export const api = {
   barMoved: () => invoke<void>("bar_moved"),
   showMain: (route: string) => invoke<void>("show_main", { route }),
   takeRoute: () => invoke<string | null>("take_route"),
+  trayStatus: (waiting: number, working: number) => invoke<void>("tray_status", { waiting, working }),
 };
 
 export const events = {

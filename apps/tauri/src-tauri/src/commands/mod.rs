@@ -247,6 +247,15 @@ pub fn show_main(app: AppHandle, route: String) {
     let _ = (app, route);
 }
 
+/// The tray tooltip follows what waits on you and what Nook is working on.
+#[tauri::command]
+pub fn tray_status(app: AppHandle, waiting: usize, working: usize) {
+    #[cfg(desktop)]
+    crate::platform::desktop::tray_status(&app, waiting, working);
+    #[cfg(not(desktop))]
+    let _ = (app, waiting, working);
+}
+
 /// De route die het hoofdvenster moet tonen, één keer.
 #[tauri::command]
 pub fn take_route(state: State<'_, AppState>) -> Option<String> {
