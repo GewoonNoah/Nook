@@ -19,7 +19,26 @@ pub fn setup(app: &AppHandle) -> tauri::Result<()> {
     create_bar(app)?;
     create_tray(app)?;
     register_shortcuts(app);
+    let settings = app.state::<AppState>().settings();
+    if settings.start_local_brain {
+        start_local_brain(app, settings.provider);
+    }
     Ok(())
+}
+
+/// A local brain that is installed but not running is started in the background, so the first question just works.
+pub fn start_local_brain(_app: &AppHandle, provider: nook_core::provider::AIProvider) {
+    use super::local_brain::{ensure_running, Server};
+    use nook_core::provider::AIProvider;
+    let server = match provider {
+        AIProvider::Ollama => Server::Ollama,
+        AIProvider::Lmstudio => Server::LmStudio,
+        _ => return,
+    };
+    tauri::async_runtime::spawn(async move {
+        let outcome = ensure_running(server).await;
+        log::info!("Local brain at launch: {outcome:?}");
+    });
 }
 
 fn create_bar(app: &AppHandle) -> tauri::Result<()> {
