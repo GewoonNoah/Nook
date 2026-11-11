@@ -4,6 +4,8 @@
   import { services, serviceEvents, type EnergyView } from "../../lib/services";
   import type { EnergyMode } from "../../lib/types";
 
+  const windows = $derived(nook.info?.capabilities.os === "windows");
+
   const s = $derived(nook.settings!);
   const accents = [0xf4f3f7, 0x8b7bff, 0x46e0a6, 0xffb84d, 0xff8a5b, 0x5ab8ff, 0xff6bb5];
   const shortcutNames: Record<string, string> = {
@@ -42,6 +44,10 @@
         <option value="top">Bovenaan het scherm</option>
         <option value="floating">Zwevend op het scherm</option>
       </select>
+    </label>
+    <label class="row">
+      <span>{windows ? "Start met Windows" : "Start bij het inloggen"}<br /><small class="faint">De balk en je sneltoetsen zijn er meteen na het opstarten, zonder Nook zelf te starten.</small></span>
+      <input type="checkbox" checked={s.launchAtLogin} onchange={(e) => nook.saveSettings({ launchAtLogin: e.currentTarget.checked })} />
     </label>
     <label class="row"><span>Groter paneel</span><input type="checkbox" checked={s.panelLarge} onchange={(e) => nook.saveSettings({ panelLarge: e.currentTarget.checked })} /></label>
   {/if}

@@ -3,6 +3,8 @@
 pub mod secrets;
 
 #[cfg(desktop)]
+pub mod autostart;
+#[cfg(desktop)]
 pub mod desktop;
 
 #[cfg(desktop)]
