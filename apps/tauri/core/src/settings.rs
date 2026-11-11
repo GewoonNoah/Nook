@@ -106,6 +106,8 @@ pub struct Settings {
     pub energy_mode: EnergyMode,
     /// Autocomplete Anywhere (Settings › Autocomplete). Off by default.
     pub autocomplete: AutocompleteSettings,
+    /// Start a local brain (Ollama, LM Studio) that is installed but not running, at launch and from a chat error.
+    pub start_local_brain: bool,
 }
 
 impl Default for Settings {
@@ -153,6 +155,7 @@ impl Default for Settings {
             show_in_screenshots: false,
             energy_mode: EnergyMode::Automatic,
             autocomplete: AutocompleteSettings::default(),
+            start_local_brain: true,
         }
     }
 }
