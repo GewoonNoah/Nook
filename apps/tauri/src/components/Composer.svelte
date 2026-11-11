@@ -2,7 +2,9 @@
   // Het invoerveld: Return verstuurt, Shift+Return is een nieuwe regel. Afbeeldingen plakken of slepen kan ook, en een
   // document (tekst, PDF, Word) slepen: Rust leest de tekst eruit en die gaat mee met je vraag.
   // Onder het veld: welke bronnen Nook mag gebruiken en welk brein denkt (klik om een ander lokaal model te kiezen).
+  import { untrack } from "svelte";
   import { api } from "../lib/api";
+  import { drafts } from "../lib/drafts";
   import { brainApi, fileBase64, type Attachment, type ServerModel } from "../lib/brain";
   import { nook } from "../lib/state.svelte";
   import { attachments } from "../lib/attachments.svelte";
@@ -27,6 +29,22 @@
   let fileInput: HTMLInputElement;
   let brainRoot = $state<HTMLDivElement>();
 
+  // Every Nook keeps what you were typing: switch away and back (or close the window) and it is still there. The bar
+  // and the main window share it, so a question started in the bar can be finished in the window.
+  let draftFor: string | null = null;
+  $effect(() => {
+    const id = nook.activeId;
+    untrack(() => {
+      if (id === draftFor) return;
+      draftFor = id;
+      text = drafts.get(id);
+    });
+  });
+  $effect(() => {
+    const value = text;
+    untrack(() => drafts.set(draftFor, value));
+  });
+
   export function focus() {
     field?.focus();
   }
@@ -49,6 +67,7 @@
     const attached = images.map(({ mediaType, base64 }) => ({ mediaType, base64 }));
     const file = attachment;
     text = "";
+    drafts.clear(draftFor);
     images = [];
     heard();
     attachment = null;
