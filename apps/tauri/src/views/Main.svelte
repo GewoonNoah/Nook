@@ -1,5 +1,6 @@
 <script lang="ts">
   // Het hoofdvenster (en de hele app op Android): Chat met al je Nooks, Agents, Werkruimte en Instellingen.
+  import { tick } from "svelte";
   import { api, events } from "../lib/api";
   import { nook } from "../lib/state.svelte";
   import Chat from "../components/Chat.svelte";
@@ -49,10 +50,19 @@
     return false;
   }));
 
+  // "nook:<id>" (from the bar's Open in window) opens that same conversation, so you continue where you were.
+  function applyRoute(r: string) {
+    if (r.startsWith("nook:")) {
+      route = "chat";
+      if (mobile) showList = false;
+      nook.select(r.slice(5)).catch(() => {});
+    } else route = parseRoute(r);
+  }
+
   $effect(() => {
-    api.takeRoute().then((r) => r && (route = parseRoute(r)));
+    api.takeRoute().then((r) => r && applyRoute(r));
     const un = events.onNavigate((r) => {
-      route = parseRoute(r);
+      applyRoute(r);
       api.takeRoute();
     });
     return () => {
@@ -78,6 +88,9 @@
       editing: !!target?.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"]), [role="textbox"], .xterm'),
     });
     if (!shortcut) return;
+    // Ctrl+F belongs to the shell inside a terminal.
+    if (shortcut === "search" && target?.closest(".xterm")) return;
+    if (shortcut === "go-workspace" && !nook.info?.capabilities.terminals) return;
     e.preventDefault();
     switch (shortcut) {
       case "palette": paletteOpen = !paletteOpen; break;
@@ -89,6 +102,15 @@
         break;
       case "settings": route = "settings"; break;
       case "stop": nook.stop(); break;
+      case "go-chat": navigate("chat"); break;
+      case "go-agents": route = "agents"; break;
+      case "go-workspace": route = "workspace"; break;
+      case "go-settings": route = "settings"; break;
+      case "search":
+        route = "chat";
+        showList = true;
+        tick().then(() => document.querySelector<HTMLInputElement>('.list input[aria-label="Search conversations"]')?.select());
+        break;
     }
   }
 
@@ -113,17 +135,17 @@
     <div class="brand"><Orb size={28} mood={nook.waiting ? "waiting" : nook.working ? "working" : "idle"} /><div><strong>Nook</strong><span>Your personal assistant</span></div></div>
     <span class="nav-label">WORKSPACE</span>
     <button class="quick-open" onclick={() => (paletteOpen = true)} title="Quick switcher (Ctrl+K)"><Icon name="search" /><span>{mobile ? "Search" : "Quick switcher"}</span><kbd>Ctrl K</kbd></button>
-    <button class:on={route === "chat"} aria-current={route === "chat" ? "page" : undefined} onclick={() => { if (route === "chat" && mobile) showList = !showList; route = "chat"; }} title="Chat"><Icon name="chat" /><span>Chat</span></button>
-    <button class:on={route === "agents"} aria-current={route === "agents" ? "page" : undefined} onclick={() => (route = "agents")} title="Agents"><Icon name="agents" /><span>Agents</span></button>
+    <button class:on={route === "chat"} aria-current={route === "chat" ? "page" : undefined} onclick={() => { if (route === "chat" && mobile) showList = !showList; route = "chat"; }} title="Chat (Ctrl+1)"><Icon name="chat" /><span>Chat</span></button>
+    <button class:on={route === "agents"} aria-current={route === "agents" ? "page" : undefined} onclick={() => (route = "agents")} title="Agents (Ctrl+2)"><Icon name="agents" /><span>Agents</span></button>
     {#if nook.info?.capabilities.terminals}
-      <button class:on={route === "workspace"} aria-current={route === "workspace" ? "page" : undefined} onclick={() => (route = "workspace")} title="Workspace"><Icon name="workspace" /><span>Workspace</span></button>
+      <button class:on={route === "workspace"} aria-current={route === "workspace" ? "page" : undefined} onclick={() => (route = "workspace")} title="Workspace (Ctrl+3)"><Icon name="workspace" /><span>Workspace</span></button>
     {/if}
     {#if companionClient}
       <button class:on={route === "companion"} aria-current={route === "companion" ? "page" : undefined} onclick={() => (route = "companion")} title="Companion"><Icon name="phone" /><span>Companion</span></button>
     {/if}
     <span class="spacer"></span>
     <div class="rail-status"><span class="dot" class:waiting={nook.waiting > 0} class:working={nook.working > 0} class:unread={!nook.waiting && !nook.working && !!nook.info?.brainReady}></span><span>{status}</span></div>
-    <button class:on={route === "settings"} aria-current={route === "settings" ? "page" : undefined} onclick={() => (route = "settings")} title="Settings (Ctrl+,)"><Icon name="settings" /><span>Settings</span><kbd>Ctrl ,</kbd></button>
+    <button class:on={route === "settings"} aria-current={route === "settings" ? "page" : undefined} onclick={() => (route = "settings")} title="Settings (Ctrl+, or Ctrl+4)"><Icon name="settings" /><span>Settings</span><kbd>Ctrl ,</kbd></button>
   </nav>
   <section class="content" aria-label={routeTitle}>
     {#if route === "chat"}

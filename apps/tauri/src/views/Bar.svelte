@@ -262,7 +262,7 @@
           {/if}
         </nav>
         <span class="spacer"></span>
-        <button class="ghost icon" title="Open in venster" onclick={() => api.showMain("chat")}>⧉</button>
+        <button class="ghost icon" title="Verder in het venster (dit gesprek)" onclick={() => api.showMain(nook.activeId ? `nook:${nook.activeId}` : "chat")}>⧉</button>
         <button class="ghost icon" title="Instellingen" onclick={() => api.showMain("settings")}>⚙</button>
       </header>
       <AgentAlerts
