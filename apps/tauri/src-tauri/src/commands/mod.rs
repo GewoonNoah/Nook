@@ -247,6 +247,15 @@ pub fn show_main(app: AppHandle, route: String) {
     let _ = (app, route);
 }
 
+/// The global shortcuts (by action) that another app already holds.
+#[tauri::command]
+pub fn shortcut_problems() -> Vec<String> {
+    #[cfg(desktop)]
+    return crate::platform::desktop::shortcut_problems();
+    #[cfg(not(desktop))]
+    vec![]
+}
+
 /// De route die het hoofdvenster moet tonen, één keer.
 #[tauri::command]
 pub fn take_route(state: State<'_, AppState>) -> Option<String> {

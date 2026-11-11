@@ -39,6 +39,7 @@ export const api = {
   barMoved: () => invoke<void>("bar_moved"),
   showMain: (route: string) => invoke<void>("show_main", { route }),
   takeRoute: () => invoke<string | null>("take_route"),
+  shortcutProblems: () => invoke<string[]>("shortcut_problems"),
 };
 
 export const events = {

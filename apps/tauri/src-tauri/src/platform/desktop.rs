@@ -22,6 +22,13 @@ pub fn setup(app: &AppHandle) -> tauri::Result<()> {
     Ok(())
 }
 
+/// Shortcuts that could not be registered (another app holds them), by action, for Settings to point out.
+static SHORTCUT_PROBLEMS: std::sync::Mutex<Vec<String>> = std::sync::Mutex::new(Vec::new());
+
+pub fn shortcut_problems() -> Vec<String> {
+    SHORTCUT_PROBLEMS.lock().unwrap_or_else(|e| e.into_inner()).clone()
+}
+
 fn create_bar(app: &AppHandle) -> tauri::Result<()> {
     let window = WebviewWindowBuilder::new(app, BAR, WebviewUrl::App("index.html#bar".into()))
         .title("Nook")
@@ -163,7 +170,12 @@ pub fn register_shortcuts(app: &AppHandle) {
     let shortcuts = app.state::<AppState>().settings().shortcuts;
     let manager = app.global_shortcut();
     let _ = manager.unregister_all();
+    let mut problems = vec![];
     for (action, accelerator) in shortcuts {
+        if accelerator.trim().is_empty() {
+            continue;
+        }
+        let name = action.clone();
         let action = action.clone();
         let result = manager.on_shortcut(accelerator.as_str(), move |app, _shortcut, event| {
             if event.state() != ShortcutState::Pressed {
@@ -179,7 +191,9 @@ pub fn register_shortcuts(app: &AppHandle) {
         });
         if let Err(e) = result {
             log::warn!("Sneltoets {accelerator} kon niet worden vastgelegd: {e}");
+            problems.push(name);
         }
     }
+    *SHORTCUT_PROBLEMS.lock().unwrap_or_else(|e| e.into_inner()) = problems;
     crate::services::register_shortcuts(app);
 }
