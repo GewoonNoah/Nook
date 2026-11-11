@@ -99,6 +99,11 @@ Launch options: `nook --window` opens the main window right away, `nook --settin
 - **Agents** and **Workspace**: follow and start sessions, approve in the bar, terminals, the browser, and worktrees.
 - **Hotkeys**: Alt+Space talk, Alt+Ctrl+Space chat, Alt+Ctrl+W main window, Alt+Ctrl+N Look Along, Alt+Ctrl+4 screen
   region, hold Control+Alt+D to dictate.
+- **Small things that save time**: Nook starts with Windows (Settings › General), starts an installed Ollama or LM
+  Studio by itself, reopens the main window where you left it, keeps a draft per Nook, brings back your previous
+  question with ↑, runs a waiting plan with Ctrl+Enter, copies an answer or a code block in one click, deletes a
+  conversation with Del (and Undo), jumps between pages with Ctrl+1…4, searches with Ctrl+F, and records a shortcut
+  when you press it.
 - **Companion**: on the PC under Settings › Companion (pair the iPhone app or Nook on Android with the QR code); on
   Android the Companion tab.
 

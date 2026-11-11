@@ -57,6 +57,9 @@
             <label><input type="checkbox" checked={s.liveScreen} onchange={(e) => nook.saveSettings({ liveScreen: e.currentTarget.checked })} /> Je scherm lezen als je erom vraagt</label>
             <label><input type="checkbox" checked={s.screenWithEveryQuestion} onchange={(e) => nook.saveSettings({ screenWithEveryQuestion: e.currentTarget.checked })} /> Je scherm meesturen met elke vraag</label>
           {/if}
+          {#if caps?.desktop}
+            <label><input type="checkbox" checked={s.launchAtLogin} onchange={(e) => nook.saveSettings({ launchAtLogin: e.currentTarget.checked })} /> Nook starten als je inlogt</label>
+          {/if}
           <label><input type="checkbox" checked={s.useMemory} onchange={(e) => nook.saveSettings({ useMemory: e.currentTarget.checked })} /> Onthouden wat je Nook vertelt</label>
           <label><input type="checkbox" checked={s.learnFromChats} onchange={(e) => nook.saveSettings({ learnFromChats: e.currentTarget.checked })} /> Zelf leren van je correcties en plannen</label>
         </div>

@@ -39,6 +39,10 @@ export const api = {
   barMoved: () => invoke<void>("bar_moved"),
   showMain: (route: string) => invoke<void>("show_main", { route }),
   takeRoute: () => invoke<string | null>("take_route"),
+  trayStatus: (waiting: number, working: number) => invoke<void>("tray_status", { waiting, working }),
+  shortcutProblems: () => invoke<string[]>("shortcut_problems"),
+  /// Starts Ollama or LM Studio when it is installed but not running.
+  startLocalBrain: (name: string) => invoke<"alreadyRunning" | "started" | "notInstalled" | "noAnswer">("start_local_brain", { name }),
 };
 
 export const events = {

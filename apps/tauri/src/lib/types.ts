@@ -57,6 +57,12 @@ export interface Settings {
   energyMode: EnergyMode;
   /// Autocomplete Anywhere (Settings › Aanvullen). Off by default.
   autocomplete: AutocompleteSettings;
+  /// Start Nook when you sign in (Settings › General).
+  launchAtLogin: boolean;
+  /// Start an installed local brain (Ollama, LM Studio) that is not running.
+  startLocalBrain: boolean;
+  trayHintShown: boolean;
+  mainWindow: { x: number; y: number; width: number; height: number; maximized: boolean } | null;
 }
 
 /// What Nook does while you share your screen or sit in a meeting.
