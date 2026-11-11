@@ -73,6 +73,11 @@ pub fn save_settings(app: AppHandle, state: State<'_, AppState>, settings: Setti
         if before.placement != saved.placement || before.panel_large != saved.panel_large {
             crate::platform::desktop::place_bar(&app, false);
         }
+        if before.launch_at_login != saved.launch_at_login {
+            if let Err(e) = crate::platform::autostart::apply(saved.launch_at_login) {
+                log::warn!("Could not update the sign-in entry: {e}");
+            }
+        }
     }
     let _ = app.emit("settings-changed", &saved);
     saved

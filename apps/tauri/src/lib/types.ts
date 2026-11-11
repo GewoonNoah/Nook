@@ -57,6 +57,8 @@ export interface Settings {
   energyMode: EnergyMode;
   /// Autocomplete Anywhere (Settings › Aanvullen). Off by default.
   autocomplete: AutocompleteSettings;
+  /// Start Nook when you sign in (Settings › General).
+  launchAtLogin: boolean;
 }
 
 /// What Nook does while you share your screen or sit in a meeting.

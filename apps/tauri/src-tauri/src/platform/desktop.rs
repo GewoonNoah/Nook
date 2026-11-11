@@ -19,6 +19,9 @@ pub fn setup(app: &AppHandle) -> tauri::Result<()> {
     create_bar(app)?;
     create_tray(app)?;
     register_shortcuts(app);
+    if let Err(e) = super::autostart::apply(app.state::<AppState>().settings().launch_at_login) {
+        log::warn!("Could not update the sign-in entry: {e}");
+    }
     Ok(())
 }
 
@@ -75,6 +78,7 @@ pub fn place_bar_sized(app: &AppHandle, expanded: bool, notice: bool) {
 }
 
 /// `--window` opent het hoofdvenster, `--settings` meteen de instellingen.
+/// `--autostart` (the sign-in entry) opens nothing but the bar.
 pub fn route_from_args(args: &[String]) -> Option<&'static str> {
     if args.iter().any(|a| a == "--settings") {
         Some("settings")

@@ -106,6 +106,9 @@ pub struct Settings {
     pub energy_mode: EnergyMode,
     /// Autocomplete Anywhere (Settings › Autocomplete). Off by default.
     pub autocomplete: AutocompleteSettings,
+    /// Start Nook when you sign in to Windows or Linux (Settings › General). On by default, so the bar and the global
+    /// shortcuts are there after a restart without starting Nook by hand.
+    pub launch_at_login: bool,
 }
 
 impl Default for Settings {
@@ -153,6 +156,7 @@ impl Default for Settings {
             show_in_screenshots: false,
             energy_mode: EnergyMode::Automatic,
             autocomplete: AutocompleteSettings::default(),
+            launch_at_login: true,
         }
     }
 }
@@ -274,6 +278,17 @@ pub fn detect_language(text: &str) -> Option<&'static str> {
     let (best, top) = scores[0];
     let second = scores[1].1;
     (top >= 2 && top > second).then_some(best)
+}
+
+#[cfg(test)]
+mod launch_at_login_tests {
+    use super::*;
+
+    #[test]
+    fn old_settings_files_start_at_login() {
+        let settings: Settings = serde_json::from_str(r#"{"language":"en"}"#).unwrap();
+        assert!(settings.launch_at_login);
+    }
 }
 
 #[cfg(test)]
