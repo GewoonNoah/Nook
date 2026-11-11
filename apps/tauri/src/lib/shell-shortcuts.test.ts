@@ -40,3 +40,15 @@ describe("shell shortcuts", () => {
     expect(shellShortcut({ ...key, key: "." }, context)).toBe("stop");
   });
 });
+
+describe("page and search shortcuts", () => {
+  it("jump to a page with Ctrl and a number, and search with Ctrl+F", () => {
+    expect(shellShortcut({ ...key, key: "1" }, context)).toBe("go-chat");
+    expect(shellShortcut({ ...key, key: "2" }, context)).toBe("go-agents");
+    expect(shellShortcut({ ...key, key: "3" }, context)).toBe("go-workspace");
+    expect(shellShortcut({ ...key, key: "4" }, { ...context, editing: true })).toBe("go-settings");
+    expect(shellShortcut({ ...key, key: "5" }, context)).toBeNull();
+    expect(shellShortcut({ ...key, key: "F" }, context)).toBe("search");
+    expect(shellShortcut({ ...key, key: "1" }, { ...context, modalOpen: true })).toBeNull();
+  });
+});
