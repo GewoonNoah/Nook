@@ -1,6 +1,6 @@
 // The toast of this window (Svelte 5 runes). Every window mounts one `Toast` (in App.svelte), so a result shows in the
 // window where you did it.
-import { ToastQueue, type Toast, type ToastKind } from "./toast";
+import { ToastQueue, type Toast, type ToastAction, type ToastKind } from "./toast";
 
 class ToastStore {
   current = $state<Toast | null>(null);
@@ -9,8 +9,8 @@ class ToastStore {
   private queue = new ToastQueue((current) => (this.current = current));
   private timer: ReturnType<typeof setInterval> | null = null;
 
-  show(title: string, kind: ToastKind = "info", detail?: string) {
-    this.queue.show(title, kind, detail);
+  show(title: string, kind: ToastKind = "info", detail?: string, action?: ToastAction) {
+    this.queue.show(title, kind, detail, action);
     if (!this.timer) {
       this.timer = setInterval(() => {
         this.queue.advance(0.25, this.paused);
@@ -37,6 +37,16 @@ class ToastStore {
   /// What failed as the title, and the error itself under it.
   error(title: string, detail?: unknown) {
     this.show(title, "error", detail === undefined ? undefined : String(detail));
+  }
+
+  /// A confirmation with one button, such as "Ongedaan maken".
+  withAction(title: string, action: ToastAction, detail?: string) {
+    this.show(title, "info", detail, action);
+  }
+
+  act() {
+    this.paused = false;
+    this.queue.act();
   }
 
   dismiss() {
