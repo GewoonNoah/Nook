@@ -229,6 +229,7 @@ targets:
       - path: Services/EmbeddedApps/EmbeddedAppCatalog.swift
       - path: Services/EmbeddedApps/WhatsAppWeb.swift
       - path: Services/Messages/ChatInbox.swift
+      - path: Services/MeetingLink.swift
       - path: Services/Messages/ChatReceipts.swift
       - path: Services/Messages/SlackData.swift
       - path: Services/Messages/TelegramData.swift

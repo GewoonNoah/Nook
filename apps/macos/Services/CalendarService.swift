@@ -12,6 +12,10 @@ struct CalEvent: Identifiable, Equatable {
     /// The color of its calendar as 0xRRGGBB, as Calendar shows it; nil when the calendar has none.
     var colorHex: UInt32? = nil
     var allDay: Bool = false
+    /// The video call it links to (Meet, Zoom, Teams …), found in its URL, location or notes.
+    var meeting: MeetingLink? = nil
+    /// False when the event is marked free, so "Your day" does not count it as busy.
+    var busy: Bool = true
 }
 
 struct ReminderItem: Identifiable, Equatable {
@@ -83,7 +87,9 @@ final class CalendarService {
                     location: $0.location ?? "",
                     calendar: $0.calendar?.title ?? "",
                     colorHex: $0.calendar?.cgColor.flatMap(Self.hex),
-                    allDay: $0.isAllDay
+                    allDay: $0.isAllDay,
+                    meeting: MeetingLink.find(in: [$0.url?.absoluteString, $0.location, $0.notes]),
+                    busy: $0.availability != .free
                 )
             }
     }

@@ -164,10 +164,13 @@ struct NookChatView: View {
                 }
                 .padding(.horizontal, NookTheme.Spacing.xxs)
 
-                // Today's calendar, in its colors, before what needs you.
+                // Today's calendar, in its colors, before what needs you; once today is done, a look at tomorrow.
                 if !AgendaStrip.left(app.upcoming, now: Date()).isEmpty {
                     homeSection(tr("home.agenda.title"))
                     AgendaStrip(events: app.upcoming, limit: compact ? 2 : 3)
+                } else if !AgendaStrip.tomorrow(app.upcoming, now: Date()).isEmpty {
+                    homeSection(tr("home.agenda.tomorrow"))
+                    AgendaStrip(events: app.upcoming, limit: compact ? 2 : 3, tomorrow: true)
                 }
 
                 if !items.isEmpty {

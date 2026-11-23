@@ -9,24 +9,33 @@ struct AgendaStrip: View {
     let events: [CalEvent]
     /// How many events are listed under the rail; the rest are counted.
     var limit = 3
+    /// Shows tomorrow instead of today: when today has nothing left, home looks ahead.
+    var tomorrow = false
 
     var body: some View {
         // Once a minute: "in 5 min" counts down and the line on the rail moves along.
         TimelineView(.periodic(from: .now, by: 60)) { context in
             let now = context.date
-            let left = Self.left(events, now: now)
+            let left = tomorrow ? Self.tomorrow(events, now: now) : Self.left(events, now: now)
             if !left.isEmpty {
                 VStack(alignment: .leading, spacing: 0) {
-                    DayRail(events: left.filter { !$0.allDay }, now: now)
+                    if !tomorrow, let free = Self.freeLine(left, now: now) {
+                        Text(free)
+                            .font(NookTheme.TextStyle.label)
+                            .foregroundStyle(NookTheme.textSecondary)
+                            .padding(.horizontal, NookTheme.Spacing.lg + NookTheme.Spacing.xxs)
+                            .padding(.top, NookTheme.Spacing.lg)
+                    }
+                    DayRail(events: left.filter { !$0.allDay }, now: tomorrow ? nil : now)
                         .padding(.horizontal, NookTheme.Spacing.lg + NookTheme.Spacing.xxs)
                         .padding(.top, NookTheme.Spacing.lg)
                         .padding(.bottom, NookTheme.Spacing.sm)
                     ForEach(Array(left.prefix(limit).enumerated()), id: \.element.id) { index, event in
                         if index > 0 { NookDivider(inset: NookTheme.Spacing.xxl + NookTheme.Spacing.sm) }
-                        AgendaRow(event: event, now: now)
+                        AgendaRow(event: event, now: now, showsSoon: !tomorrow)
                     }
                     if left.count > limit {
-                        Text(tr("home.agenda.more", left.count - limit))
+                        Text(tr(tomorrow ? "home.agenda.moreTomorrow" : "home.agenda.more", left.count - limit))
                             .font(NookTheme.TextStyle.caption)
                             .foregroundStyle(NookTheme.textTertiary)
                             .padding(.horizontal, NookTheme.Spacing.lg + NookTheme.Spacing.xxs)
@@ -46,6 +55,34 @@ struct AgendaStrip: View {
             .sorted { ($0.allDay ? 0 : 1, $0.start) < ($1.allDay ? 0 : 1, $1.start) }
     }
 
+    /// Tomorrow's events, all-day ones first: what home looks ahead to once today has nothing left.
+    static func tomorrow(_ events: [CalEvent], now: Date, calendar: Calendar = .current) -> [CalEvent] {
+        guard let next = calendar.date(byAdding: .day, value: 1, to: now) else { return [] }
+        return events
+            .filter { calendar.isDate($0.start, inSameDayAs: next) }
+            .sorted { ($0.allDay ? 0 : 1, $0.start) < ($1.allDay ? 0 : 1, $1.start) }
+    }
+
+    /// "Free until 14:00", "Busy until 15:30", or "Free for the rest of the day" once the last event is over; nil while
+    /// nothing timed is left (only all-day events).
+    static func freeLine(_ events: [CalEvent], now: Date) -> String? {
+        let timed = events.filter { !$0.allDay && $0.busy }
+        guard !timed.isEmpty else { return nil }
+        let time = NookDates.formatter("HH:mm", locale: I18n.shared.currentLanguage.rawValue)
+        if let current = timed.filter({ $0.start <= now && $0.end > now }).max(by: { $0.end < $1.end }) {
+            // Back to back: busy until the end of the run of meetings, not just this one.
+            var until = current.end
+            for event in timed.sorted(by: { $0.start < $1.start }) where event.start <= until && event.end > until {
+                until = event.end
+            }
+            return tr("home.agenda.busyUntil", time.string(from: until))
+        }
+        if let next = timed.filter({ $0.start > now }).min(by: { $0.start < $1.start }) {
+            return tr("home.agenda.freeUntil", time.string(from: next.start))
+        }
+        return nil
+    }
+
     /// Opens Calendar on the event's day.
     static func open(_ event: CalEvent) {
         // Calendar's own scheme opens it at a date given as seconds since 2001.
@@ -62,13 +99,15 @@ struct AgendaStrip: View {
 /// color, the hours marked underneath, and Nook's color where now is.
 private struct DayRail: View {
     let events: [CalEvent]
-    let now: Date
+    /// Where now is on the rail; nil for another day.
+    let now: Date?
 
     /// From a little before the first thing (or now) to a little after the last, in whole hours, at least six of them.
     private var span: (start: Date, end: Date) {
         let calendar = Calendar.current
-        let first = min(events.map(\.start).min() ?? now, now)
-        let last = max(events.map(\.end).max() ?? now, now)
+        let anchor = now ?? events.map(\.start).min() ?? Date()
+        let first = min(events.map(\.start).min() ?? anchor, anchor)
+        let last = max(events.map(\.end).max() ?? anchor, anchor)
         let start = calendar.dateInterval(of: .hour, for: first)?.start ?? first
         var end = calendar.dateInterval(of: .hour, for: last)?.end ?? last
         if end.timeIntervalSince(start) < 6 * 3600 { end = start.addingTimeInterval(6 * 3600) }
@@ -95,15 +134,17 @@ private struct DayRail: View {
                         let start = max(x(event.start), 0), end = min(x(event.end), width)
                         Capsule()
                             .fill(NookPalette.eventColor(hex: event.colorHex, calendar: event.calendar)
-                                .opacity(event.end <= now ? 0.35 : 1))
+                                .opacity(now.map { event.end <= $0 } == true ? 0.35 : 1))
                             .frame(width: max(end - start, 4))
                             .offset(x: start)
                     }
                     // Now: a short bar in Nook's color, a little taller than the track.
-                    Capsule()
-                        .fill(NookTheme.iris)
-                        .frame(width: 2, height: 14)
-                        .offset(x: min(max(x(now) - 1, 0), width - 2))
+                    if let now {
+                        Capsule()
+                            .fill(NookTheme.iris)
+                            .frame(width: 2, height: 14)
+                            .offset(x: min(max(x(now) - 1, 0), width - 2))
+                    }
                 }
                 .frame(height: 8)
                 .frame(maxHeight: .infinity)
@@ -135,6 +176,8 @@ private struct DayRail: View {
 private struct AgendaRow: View {
     let event: CalEvent
     let now: Date
+    /// "Now" and "In 5 min": only for today.
+    var showsSoon = true
     @State private var hovering = false
 
     private static let time: DateFormatter = {
@@ -153,6 +196,7 @@ private struct AgendaRow: View {
 
     /// "Now", or how soon it starts when that is within the hour.
     private var soon: String? {
+        guard showsSoon else { return nil }
         if ongoing && !event.allDay { return tr("home.agenda.now") }
         let minutes = Int(event.start.timeIntervalSince(now) / 60)
         if minutes >= 0 && minutes < 60 { return tr("home.agenda.inMinutes", max(minutes, 1)) }
@@ -195,9 +239,15 @@ private struct AgendaRow: View {
                     .foregroundStyle(NookTheme.textSecondary)
                 }
                 Spacer(minLength: NookTheme.Spacing.md)
-                Image(systemName: "chevron.right")
-                    .font(NookTheme.font(9.5, .semibold))
-                    .foregroundStyle(hovering ? NookTheme.paper : NookTheme.textTertiary)
+                // A call that starts within a quarter of an hour, or is going on: join it from here.
+                if let meeting = event.meeting, showsSoon, event.end > now,
+                   event.start.timeIntervalSince(now) < 15 * 60 {
+                    JoinCallButton(meeting: meeting)
+                } else {
+                    Image(systemName: "chevron.right")
+                        .font(NookTheme.font(9.5, .semibold))
+                        .foregroundStyle(hovering ? NookTheme.paper : NookTheme.textTertiary)
+                }
             }
             .fixedSize(horizontal: false, vertical: true)
             .padding(.horizontal, NookTheme.Spacing.lg + NookTheme.Spacing.xxs)
@@ -210,5 +260,32 @@ private struct AgendaRow: View {
         .animation(NookTheme.hover, value: hovering)
         .help(tr("home.agenda.open"))
         .accessibilityLabel("\(event.title), \(when)" + (soon.map { ", \($0)" } ?? ""))
+    }
+}
+
+/// "Join" on an event whose video call is about to start: in the service's own color, it opens the call's link.
+private struct JoinCallButton: View {
+    let meeting: MeetingLink
+    @State private var hovering = false
+
+    var body: some View {
+        let color = NookPalette.meeting(meeting.service)
+        Button { NSWorkspace.shared.open(meeting.url) } label: {
+            HStack(spacing: NookTheme.Spacing.xs) {
+                Image(systemName: "video.fill")
+                    .font(NookTheme.font(10, .semibold))
+                Text(tr("home.agenda.join"))
+                    .font(NookTheme.TextStyle.label)
+            }
+            .foregroundStyle(NookTheme.ink)
+            .padding(.horizontal, NookTheme.Spacing.md)
+            .frame(height: 26)
+            .background(Capsule().fill(color.opacity(hovering ? 1 : 0.9)))
+            .hoverLift(hovering, scale: 1.03)
+        }
+        .buttonStyle(.plain)
+        .onHover { hovering = $0 }
+        .help(tr("home.agenda.joinHelp", meeting.service.title))
+        .accessibilityLabel(tr("home.agenda.joinHelp", meeting.service.title))
     }
 }

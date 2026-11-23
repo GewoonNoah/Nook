@@ -24,6 +24,18 @@ enum NookPalette {
         Color(hex: 0xA48CF2), Color(hex: 0x5CC8E8), Color(hex: 0xE5C95C), Color(hex: 0xEF7B73),
     ]
 
+    /// The color of a video call's service on its "Join" button.
+    static func meeting(_ service: MeetingLink.Service) -> Color {
+        switch service {
+        case .meet: return Color(hex: 0x34A853)
+        case .zoom: return Color(hex: 0x4A8CFF)
+        case .teams: return Color(hex: 0x7B83EB)
+        case .webex: return Color(hex: 0x3FC1A5)
+        case .whereby: return Color(hex: 0xA48CF2)
+        case .facetime: return Color(hex: 0x5ED67A)
+        }
+    }
+
     /// A stable color for a name (a calendar, a person) out of `palette`.
     static func color(for name: String, in palette: [Color]) -> Color {
         guard !palette.isEmpty else { return NookTheme.textSecondary }
