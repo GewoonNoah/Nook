@@ -145,7 +145,7 @@ struct ChatTranscript: View {
             ForEach(rows) { row in
                 switch row.entry {
                 case .day(_, let label):
-                    ChatDayDivider(label: label)
+                    ChatDayDivider(label: label, pill: skin != .nook ? skin.theirs : nil)
                 case .message(_, let first, _):
                     if let bubble = byID[row.id] {
                         ChatBubbleView(bubble: bubble, first: first, newest: bubble.id == bubbles.last?.id, skin: skin,
@@ -211,11 +211,17 @@ struct ChatTranscript: View {
 /// around it: the space marks the break, no pill needed.
 private struct ChatDayDivider: View {
     let label: String
+    /// In a chat app's colors the day sits on a small pill of its bubble color, as chat apps show it; nil keeps the
+    /// quiet word on its own.
+    var pill: Color? = nil
 
     var body: some View {
         Text(label)
             .font(NookTheme.TextStyle.caption)
-            .foregroundStyle(NookTheme.textTertiary)
+            .foregroundStyle(pill == nil ? NookTheme.textTertiary : NookTheme.textStrong)
+            .padding(.horizontal, pill == nil ? 0 : NookTheme.Spacing.md)
+            .padding(.vertical, pill == nil ? 0 : NookTheme.Spacing.xs)
+            .background(Capsule().fill(pill ?? Color.clear))
             .frame(maxWidth: .infinity)
             .padding(.top, NookTheme.Spacing.xl)
             .padding(.bottom, NookTheme.Spacing.sm)

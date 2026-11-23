@@ -150,6 +150,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             }
             status = true
         }
+        // A focus session that runs: how long is left, and a click ends it.
+        if let session = FocusTimer.shared.session {
+            let left = FocusSession.clock(session.remaining(at: Date()))
+            add(to: menu, title: tr("menu.focusLeft", left), action: #selector(stopFocus), icon: "timer")
+            status = true
+        }
         let active = model.activeAgents
         if !active.isEmpty {
             let waiting = active.filter { $0.status == .waiting || $0.approvalID != nil }.count
@@ -293,6 +299,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @objc private func openChat() { model.viewModel.focusChat = true; model.viewModel.show(.panel(.chat), inNotch: true) }
+    @objc private func stopFocus() { FocusTimer.shared.stop() }
     @objc private func joinCall(_ sender: NSMenuItem) {
         if let url = sender.representedObject as? URL { NSWorkspace.shared.open(url) }
     }

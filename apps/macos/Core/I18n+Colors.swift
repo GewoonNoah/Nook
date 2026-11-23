@@ -4,6 +4,7 @@ import Foundation
 
 let colorsTranslations: [AppLanguage: [String: String]] = [
     .nl: [
+        "menu.focusLeft": "Focus: nog %@ (klik om te stoppen)",
         "focus.section": "Focus",
         "focus.title": "Focussessie",
         "focus.hint": "Nook houdt de tijd bij en zegt het als je pauze verdient.",
@@ -32,6 +33,7 @@ let colorsTranslations: [AppLanguage: [String: String]] = [
         "home.agenda.open": "Openen in Agenda",
     ],
     .en: [
+        "menu.focusLeft": "Focus: %@ left (click to stop)",
         "focus.section": "Focus",
         "focus.title": "Focus session",
         "focus.hint": "Nook keeps time and tells you when you've earned a break.",
@@ -60,6 +62,7 @@ let colorsTranslations: [AppLanguage: [String: String]] = [
         "home.agenda.open": "Open in Calendar",
     ],
     .de: [
+        "menu.focusLeft": "Fokus: noch %@ (zum Beenden klicken)",
         "focus.section": "Fokus",
         "focus.title": "Fokus-Sitzung",
         "focus.hint": "Nook behält die Zeit im Blick und sagt dir, wann du eine Pause verdient hast.",
@@ -88,6 +91,7 @@ let colorsTranslations: [AppLanguage: [String: String]] = [
         "home.agenda.open": "In Kalender öffnen",
     ],
     .fr: [
+        "menu.focusLeft": "Concentration : encore %@ (clique pour arrêter)",
         "focus.section": "Concentration",
         "focus.title": "Session de concentration",
         "focus.hint": "Nook garde l'heure et te dit quand tu as mérité une pause.",
@@ -116,6 +120,7 @@ let colorsTranslations: [AppLanguage: [String: String]] = [
         "home.agenda.open": "Ouvrir dans Calendrier",
     ],
     .es: [
+        "menu.focusLeft": "Enfoque: quedan %@ (haz clic para parar)",
         "focus.section": "Enfoque",
         "focus.title": "Sesión de enfoque",
         "focus.hint": "Nook lleva el tiempo y te avisa cuando te mereces un descanso.",
