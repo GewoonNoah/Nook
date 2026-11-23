@@ -4,6 +4,9 @@ import Foundation
 
 let colorsTranslations: [AppLanguage: [String: String]] = [
     .nl: [
+        "home.week.title": "Deze week",
+        "home.week.free": "%@: niets gepland",
+        "home.week.events": "%@: %ld afspraken",
         "menu.focusLeft": "Focus: nog %@ (klik om te stoppen)",
         "focus.section": "Focus",
         "focus.title": "Focussessie",
@@ -33,6 +36,9 @@ let colorsTranslations: [AppLanguage: [String: String]] = [
         "home.agenda.open": "Openen in Agenda",
     ],
     .en: [
+        "home.week.title": "This week",
+        "home.week.free": "%@: nothing planned",
+        "home.week.events": "%@: %ld events",
         "menu.focusLeft": "Focus: %@ left (click to stop)",
         "focus.section": "Focus",
         "focus.title": "Focus session",
@@ -62,6 +68,9 @@ let colorsTranslations: [AppLanguage: [String: String]] = [
         "home.agenda.open": "Open in Calendar",
     ],
     .de: [
+        "home.week.title": "Diese Woche",
+        "home.week.free": "%@: nichts geplant",
+        "home.week.events": "%@: %ld Termine",
         "menu.focusLeft": "Fokus: noch %@ (zum Beenden klicken)",
         "focus.section": "Fokus",
         "focus.title": "Fokus-Sitzung",
@@ -91,6 +100,9 @@ let colorsTranslations: [AppLanguage: [String: String]] = [
         "home.agenda.open": "In Kalender öffnen",
     ],
     .fr: [
+        "home.week.title": "Cette semaine",
+        "home.week.free": "%@ : rien de prévu",
+        "home.week.events": "%@ : %ld événements",
         "menu.focusLeft": "Concentration : encore %@ (clique pour arrêter)",
         "focus.section": "Concentration",
         "focus.title": "Session de concentration",
@@ -120,6 +132,9 @@ let colorsTranslations: [AppLanguage: [String: String]] = [
         "home.agenda.open": "Ouvrir dans Calendrier",
     ],
     .es: [
+        "home.week.title": "Esta semana",
+        "home.week.free": "%@: nada previsto",
+        "home.week.events": "%@: %ld eventos",
         "menu.focusLeft": "Enfoque: quedan %@ (haz clic para parar)",
         "focus.section": "Enfoque",
         "focus.title": "Sesión de enfoque",

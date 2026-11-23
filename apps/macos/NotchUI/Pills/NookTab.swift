@@ -173,6 +173,12 @@ struct NookChatView: View {
                     AgendaStrip(events: app.upcoming, limit: compact ? 2 : 3, tomorrow: true)
                 }
 
+                // The coming week at a glance, where there is room for it.
+                if !compact, app.calendar.hasEventAccess {
+                    homeSection(tr("home.week.title"))
+                    WeekStrip()
+                }
+
                 // A focus session in one click, and its countdown while one runs.
                 homeSection(tr("focus.section"))
                 FocusCard()
