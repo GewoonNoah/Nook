@@ -227,6 +227,8 @@ struct CardView: View {
                        quote: replyingTo?.quote(contact: card.title),
                        cancelQuote: { withAnimation(NookTheme.reveal) { replyingTo = nil } },
                        draft: onDraft, send: submitReply)
+            // A message card answers in its chat app's colors (a WhatsApp card's send button is green).
+            .skin(card.chatReply ? ChatSkin.of(card.appIcon ?? "") : .nook)
     }
 
     /// The compact card's one field (the Double Tap field): the same composer as the Nook chat, with the model and what

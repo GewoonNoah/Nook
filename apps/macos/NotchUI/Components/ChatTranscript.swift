@@ -141,7 +141,6 @@ struct ChatTranscript: View {
         let byID = Dictionary(bubbles.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         let rows = entries.map { Row(id: ChatTimeline.id(of: $0), entry: $0) }
         let top = rows.first?.id
-        let skin = skin
         return VStack(spacing: 0) {
             ForEach(rows) { row in
                 switch row.entry {
