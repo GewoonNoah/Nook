@@ -106,8 +106,10 @@ struct ChatsSidebar: View {
                                 .padding(.bottom, NookTheme.Spacing.xs)
                         }
                         ForEach(apps, id: \.self) { id in
+                            let skin = ChatSkin.of(id)
                             ChatsSidebarRow(title: MessagingApps.app(id: id)?.name ?? id, count: newByApp[id] ?? 0,
-                                            countTint: NookTheme.amber, selected: app == id, compact: compact) {
+                                            countTint: skin == .nook ? NookTheme.amber : skin.accent, selected: app == id,
+                                            compact: compact, selectedTint: skin == .nook ? nil : skin.accent) {
                                 SiteIcon(domain: nil, fallback: "bubble.left.fill", tint: NookTheme.textSecondary, size: 15,
                                          source: id)
                             } action: {
@@ -195,18 +197,21 @@ private struct ChatsSidebarRow<Glyph: View>: View {
     let selected: Bool
     let compact: Bool
     var muted = false
+    /// An app's own color: chosen, the row takes a wash of it instead of the neutral fill.
+    var selectedTint: Color? = nil
     let glyph: () -> Glyph
     let action: () -> Void
     @State private var hovering = false
 
     init(title: String, count: Int, countTint: Color, selected: Bool, compact: Bool, muted: Bool = false,
-         @ViewBuilder glyph: @escaping () -> Glyph, action: @escaping () -> Void) {
+         selectedTint: Color? = nil, @ViewBuilder glyph: @escaping () -> Glyph, action: @escaping () -> Void) {
         self.title = title
         self.count = count
         self.countTint = countTint
         self.selected = selected
         self.compact = compact
         self.muted = muted
+        self.selectedTint = selectedTint
         self.glyph = glyph
         self.action = action
     }
@@ -239,7 +244,8 @@ private struct ChatsSidebarRow<Glyph: View>: View {
             .padding(.horizontal, compact ? 0 : NookTheme.Spacing.md)
             .frame(maxWidth: .infinity, minHeight: 30, alignment: compact ? .center : .leading)
             .background(RoundedRectangle(cornerRadius: NookTheme.Radius.control, style: .continuous)
-                .fill(NookTheme.rowFill(selected: selected, hovering: hovering, rest: .clear)))
+                .fill(selected && selectedTint != nil ? selectedTint!.opacity(0.16)
+                      : NookTheme.rowFill(selected: selected, hovering: hovering, rest: .clear)))
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)

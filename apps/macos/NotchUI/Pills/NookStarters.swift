@@ -23,10 +23,17 @@ private struct SuggestionCard: View {
     let action: () -> Void
     @State private var hovering = false
 
+    /// A starter with a symbol gets a color of its own, the same for the same kind of question every time, so the grid
+    /// is not all grey; a connection or an agent keeps its own icon.
+    private var tint: Color {
+        if case .symbol(let name) = suggestion.logo { return NookPalette.color(for: name, in: NookPalette.events) }
+        return NookTheme.textSecondary
+    }
+
     var body: some View {
         Button(action: action) {
             HStack(spacing: NookTheme.Spacing.md) {
-                HomeLogo(logo: suggestion.logo, tint: NookTheme.textSecondary, size: 26)
+                HomeLogo(logo: suggestion.logo, tint: tint, size: 26)
                 Text(suggestion.text)
                     .font(NookTheme.TextStyle.body)
                     .foregroundStyle(hovering ? NookTheme.paper : NookTheme.textStrong)

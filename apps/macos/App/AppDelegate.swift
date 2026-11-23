@@ -142,6 +142,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         if let event = model.upcoming.first(where: { $0.end > Date() }) {
             let when = event.start <= Date() ? tr("menu.now") : Self.timeFormatter.string(from: event.start)
             add(to: menu, title: tr("menu.nextEvent", event.title, when), action: #selector(openChat), icon: "calendar")
+            // Its video call, once it is about to start: one click from the menu bar into the meeting.
+            if let meeting = event.meeting, event.start.timeIntervalSinceNow < 15 * 60 {
+                let join = add(to: menu, title: tr("home.agenda.joinHelp", meeting.service.title), action: #selector(joinCall),
+                               icon: "video.fill")
+                join.representedObject = meeting.url
+            }
             status = true
         }
         let active = model.activeAgents
@@ -287,6 +293,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @objc private func openChat() { model.viewModel.focusChat = true; model.viewModel.show(.panel(.chat), inNotch: true) }
+    @objc private func joinCall(_ sender: NSMenuItem) {
+        if let url = sender.representedObject as? URL { NSWorkspace.shared.open(url) }
+    }
     @objc private func openAgents() { model.viewModel.show(.panel(.agents), inNotch: true) }
     @objc private func playPause() { model.nowPlaying.control(.playPause) }
     @objc private func nextTrack() { model.nowPlaying.control(.next) }
