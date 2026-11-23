@@ -103,7 +103,7 @@ private struct DayRail: View {
     let now: Date?
 
     /// From a little before the first thing (or now) to a little after the last, in whole hours, at least six of them.
-    private var span: (start: Date, end: Date) {
+    private var dayRange: (start: Date, end: Date) {
         let calendar = Calendar.current
         let anchor = now ?? events.map(\.start).min() ?? Date()
         let first = min(events.map(\.start).min() ?? anchor, anchor)
@@ -121,7 +121,7 @@ private struct DayRail: View {
     }()
 
     var body: some View {
-        let span = span
+        let span = dayRange
         let length = span.end.timeIntervalSince(span.start)
         let marks = hourMarks(span)
         VStack(spacing: NookTheme.Spacing.xs) {
