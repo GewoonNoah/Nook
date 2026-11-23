@@ -153,6 +153,9 @@ struct NotchRootView: View {
                       ring: TaskRingItem.all(app: app, selected: viewModel.selectedAgentID)) {
                     if let session = focus.session {
                         FocusMiniRing(session: session)
+                    } else {
+                        // The next event, once it is near: its calendar's color and the minutes left.
+                        NextEventBadge(events: app.upcoming)
                     }
                 }
                 .contentShape(Rectangle())

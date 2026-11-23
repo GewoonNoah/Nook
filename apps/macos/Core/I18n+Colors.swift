@@ -4,6 +4,7 @@ import Foundation
 
 let colorsTranslations: [AppLanguage: [String: String]] = [
     .nl: [
+        "notch.minutesShort": "%ldm",
         "call.soon": "%@ begint over %ld min",
         "call.now": "%@ begint nu",
         "settings.accent.teal": "Petrol",
@@ -40,6 +41,7 @@ let colorsTranslations: [AppLanguage: [String: String]] = [
         "home.agenda.open": "Openen in Agenda",
     ],
     .en: [
+        "notch.minutesShort": "%ldm",
         "call.soon": "%@ starts in %ld min",
         "call.now": "%@ starts now",
         "settings.accent.teal": "Teal",
@@ -76,6 +78,7 @@ let colorsTranslations: [AppLanguage: [String: String]] = [
         "home.agenda.open": "Open in Calendar",
     ],
     .de: [
+        "notch.minutesShort": "%ldm",
         "call.soon": "%@ beginnt in %ld Min.",
         "call.now": "%@ beginnt jetzt",
         "settings.accent.teal": "Petrol",
@@ -112,6 +115,7 @@ let colorsTranslations: [AppLanguage: [String: String]] = [
         "home.agenda.open": "In Kalender öffnen",
     ],
     .fr: [
+        "notch.minutesShort": "%ldm",
         "call.soon": "%@ commence dans %ld min",
         "call.now": "%@ commence maintenant",
         "settings.accent.teal": "Sarcelle",
@@ -148,6 +152,7 @@ let colorsTranslations: [AppLanguage: [String: String]] = [
         "home.agenda.open": "Ouvrir dans Calendrier",
     ],
     .es: [
+        "notch.minutesShort": "%ldm",
         "call.soon": "%@ empieza en %ld min",
         "call.now": "%@ empieza ahora",
         "settings.accent.teal": "Verde azulado",

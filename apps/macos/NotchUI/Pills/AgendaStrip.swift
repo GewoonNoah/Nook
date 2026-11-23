@@ -289,3 +289,40 @@ private struct JoinCallButton: View {
         .accessibilityLabel(tr("home.agenda.joinHelp", meeting.service.title))
     }
 }
+
+/// The idle notch's reminder of what comes next: within ten minutes of an event, a dot in its calendar's color and the
+/// minutes until it starts ("8m"), with the event as its tooltip. Nothing otherwise.
+struct NextEventBadge: View {
+    let events: [CalEvent]
+
+    /// How long before an event the badge appears.
+    static let window: TimeInterval = 10 * 60
+
+    static func next(_ events: [CalEvent], now: Date) -> CalEvent? {
+        events
+            .filter { !$0.allDay && $0.busy && $0.start > now && $0.start.timeIntervalSince(now) <= window }
+            .min { $0.start < $1.start }
+    }
+
+    var body: some View {
+        TimelineView(.periodic(from: .now, by: 30)) { context in
+            if let event = Self.next(events, now: context.date) {
+                let minutes = max(Int((event.start.timeIntervalSince(context.date) / 60).rounded(.up)), 1)
+                let line = tr("call.soon", event.title, minutes)
+                HStack(spacing: NookTheme.Spacing.xs) {
+                    Circle()
+                        .fill(NookPalette.eventColor(hex: event.colorHex, calendar: event.calendar))
+                        .frame(width: 6, height: 6)
+                    Text(tr("notch.minutesShort", minutes))
+                        .font(NookTheme.TextStyle.caption)
+                        .monospacedDigit()
+                        .foregroundStyle(NookTheme.textStrong)
+                        .fixedSize()
+                }
+                .help(line)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(line)
+            }
+        }
+    }
+}
