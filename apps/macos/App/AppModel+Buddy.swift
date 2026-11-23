@@ -150,6 +150,9 @@ extension AppModel {
             presentToday()
         case .openAgents:
             viewModel.show(.panel(.agents), inNotch: true)
+        case .join(let url):
+            viewModel.show(.idle)
+            NSWorkspace.shared.open(url)
         case nil:
             viewModel.show(.idle)
         }

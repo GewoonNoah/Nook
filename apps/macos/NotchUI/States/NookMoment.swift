@@ -10,6 +10,8 @@ struct NookMoment: Equatable, Identifiable {
         case showToday
         /// Open the panel at the agents.
         case openAgents
+        /// Join a video call that is about to start (its Meet, Zoom or Teams link).
+        case join(URL)
     }
 
     var id: String

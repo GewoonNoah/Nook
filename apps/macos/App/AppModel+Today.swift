@@ -111,6 +111,7 @@ extension AppModel {
         let events = await calendar.loadEvents(from: now, to: now.addingTimeInterval(36 * 3600))
         // Every five minutes, and usually the same meetings: publishing them again would redraw every view of the app.
         if events != upcoming { upcoming = events }
+        CallReminder.shared.schedule(events) { [weak self] event in self?.remindToJoin(event) }
     }
 
 
