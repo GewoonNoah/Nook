@@ -120,3 +120,25 @@ private struct FocusChip: View {
         .accessibilityLabel(title)
     }
 }
+
+/// A focus session on the idle notch: a small ring in Nook's color that fills as the time goes, next to the notch.
+struct FocusMiniRing: View {
+    let session: FocusSession
+
+    var body: some View {
+        // Every few seconds is enough for a ring this small.
+        TimelineView(.periodic(from: .now, by: 5)) { context in
+            let left = tr("focus.left", FocusSession.clock(session.remaining(at: context.date)))
+            ZStack {
+                Circle().stroke(NookTheme.smoke, lineWidth: 2.5)
+                Circle()
+                    .trim(from: 0, to: max(session.progress(at: context.date), 0.001))
+                    .stroke(NookTheme.iris, style: StrokeStyle(lineWidth: 2.5, lineCap: .round))
+                    .rotationEffect(.degrees(-90))
+            }
+            .frame(width: 13, height: 13)
+            .help(left)
+            .accessibilityLabel(left)
+        }
+    }
+}

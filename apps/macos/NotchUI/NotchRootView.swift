@@ -9,6 +9,8 @@ struct NotchRootView: View {
     @ObservedObject private var visits = SessionVisits.shared
     /// Nook's idle frame rate follows the energy plan: a little slower on battery.
     @ObservedObject private var energy = EnergyMonitor.shared
+    /// A focus session that runs shows as a small ring on the idle notch's right.
+    @ObservedObject private var focus = FocusTimer.shared
     /// Lets the closed notch's ring follow Nook. Held, not observed: only the ring redraws when he moves.
     @State private var orbMotion = NookMotion()
 
@@ -140,7 +142,7 @@ struct NotchRootView: View {
         case .idle:
             let active = app.activeAgents
             let busy = !active.isEmpty || app.chat.anyBusy
-            if !busy && app.settings.hideWhenIdle && !viewModel.geometry.isFloating {
+            if !busy && focus.session == nil && app.settings.hideWhenIdle && !viewModel.geometry.isFloating {
                 Color.clear
             } else {
                 // An agent or a Nook at work: Nook thinks along inside a thin ring, one piece per task, as in the panel
@@ -149,7 +151,9 @@ struct NotchRootView: View {
                 let mood: NookMood = busy ? (waiting ? .waiting : .think) : (viewModel.pointerInside ? .seen : .rest)
                 wings(nh: nh, nw: nw, mood: mood, animated: busy || viewModel.pointerInside, orbSize: 20,
                       ring: TaskRingItem.all(app: app, selected: viewModel.selectedAgentID)) {
-                    EmptyView()
+                    if let session = focus.session {
+                        FocusMiniRing(session: session)
+                    }
                 }
                 .contentShape(Rectangle())
                 .onTapGesture { NookPresence.shared.poke(); viewModel.openPanel() }

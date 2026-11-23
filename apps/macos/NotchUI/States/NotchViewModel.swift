@@ -751,7 +751,8 @@ final class NotchViewModel: ObservableObject {
         }
         switch state {
         case .idle:
-            if app?.settings.hideWhenIdle == true, !geometry.isFloating, !agentsActive, !(app?.chat.anyBusy ?? false) {
+            if app?.settings.hideWhenIdle == true, !geometry.isFloating, !agentsActive, !(app?.chat.anyBusy ?? false),
+               !FocusTimer.shared.isRunning {
                 // The physical notch area; without a notch, a thin hover trigger strip at the top.
                 return CGSize(width: nw, height: geometry.hasNotch ? nh : 5)
             }
