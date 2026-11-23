@@ -19,8 +19,11 @@ user or contributor notices, add a line under **Unreleased**. At release time th
   with "In 5 min", how long you are free or busy, a look at tomorrow once today is done, and a *Join* button for a
   Meet, Zoom, Teams, Webex, Whereby or FaceTime call that is about to start (also in the menu bar).
 - *This week* on home: the next seven days with a dot per event in its calendar's color.
-- Focus sessions: 25, 50 or 90 minutes from home's *Focus* card, with a countdown ring, +5 min, the time left in the
-  menu bar, and a celebration with a breather when the time is up.
+- Focus sessions: 25, 50 or 90 minutes from home's *Focus* card, with a countdown ring (also on the idle notch), +5
+  min, the time left in the menu bar, and a celebration with a breather when the time is up.
+- A reminder next to the notch two minutes before a video call, with *Join*, and on the idle notch the minutes until
+  the next event once it is ten minutes away. Settings › Appearance › *Home* turns each new home section and the
+  reminder off. Teal and orange join the accent colors.
 
 - Downloaded builds (the release .dmg/.zip) update themselves from GitHub Releases through the footer's Update
   button: Nook downloads the release's .zip, checks its Ed25519 signature against the key it carries, and installs it
