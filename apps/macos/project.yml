@@ -176,6 +176,7 @@ targets:
       - path: Core/I18n+Languages.swift
       - path: Core/I18n+Look.swift
       - path: Core/I18n+Colors.swift
+      - path: Core/I18n+Tools.swift
       - path: Core/I18n+Memory.swift
       - path: Core/I18n+Music.swift
       - path: Core/I18n+Permissions.swift
@@ -231,6 +232,8 @@ targets:
       - path: Services/Messages/ChatInbox.swift
       - path: Services/MeetingLink.swift
       - path: Services/FocusSession.swift
+      - path: Services/Tools/UnitConversion.swift
+      - path: Services/Tools/Habits.swift
       - path: Services/Messages/ChatReceipts.swift
       - path: Services/Messages/SlackData.swift
       - path: Services/Messages/TelegramData.swift

@@ -319,6 +319,17 @@ final class AppSettings: ObservableObject {
     @Published var homeFocus: Bool {
         didSet { UserDefaults.standard.set(homeFocus, forKey: "homeFocus") }
     }
+    /// The Tools tab remembers what you copy (in memory only, never a concealed copy).
+    @Published var clipboardHistory: Bool {
+        didSet {
+            UserDefaults.standard.set(clipboardHistory, forKey: "clipboardHistory")
+            if !clipboardHistory { Task { @MainActor in ClipboardHistory.shared.clear() } }
+        }
+    }
+    /// Nook speaks up when the battery runs low and when it is full.
+    @Published var batteryAlerts: Bool {
+        didSet { UserDefaults.standard.set(batteryAlerts, forKey: "batteryAlerts") }
+    }
     /// Nook says so two minutes before a video call, with Join.
     @Published var callReminders: Bool {
         didSet { UserDefaults.standard.set(callReminders, forKey: "callReminders") }
@@ -662,6 +673,8 @@ final class AppSettings: ObservableObject {
         homeAgenda = defaults.object(forKey: "homeAgenda") as? Bool ?? true
         homeFocus = defaults.object(forKey: "homeFocus") as? Bool ?? true
         callReminders = defaults.object(forKey: "callReminders") as? Bool ?? true
+        clipboardHistory = defaults.object(forKey: "clipboardHistory") as? Bool ?? true
+        batteryAlerts = defaults.object(forKey: "batteryAlerts") as? Bool ?? true
         let storedLook = NookLook(stored: defaults.string(forKey: "nookLook"))
         nookLook = storedLook
         NookAppearance.shared.look = storedLook

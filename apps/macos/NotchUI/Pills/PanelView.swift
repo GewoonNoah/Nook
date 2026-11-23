@@ -92,7 +92,7 @@ struct PanelView: View {
     private var footerUnderList: Bool {
         switch tab {
         case .nook, .chat, .connect, .shelf, .agents, .inbox: return true
-        case .music: return false
+        case .music, .tools: return false
         }
     }
 
@@ -213,6 +213,7 @@ struct PanelView: View {
         case .agents: AgentsTab(viewModel: viewModel)
         case .inbox: ChatsTab(viewModel: viewModel, openOnAgents: openOnAgents)
         case .music: MusicTab()
+        case .tools: ToolsTab()
         }
     }
 }

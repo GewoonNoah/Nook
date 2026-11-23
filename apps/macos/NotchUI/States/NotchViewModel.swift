@@ -170,6 +170,7 @@ final class NotchViewModel: ObservableObject {
         switch PanelTab(rawValue: UserDefaults.standard.string(forKey: "window.lastTab") ?? "") {
         case .agents: return .agents
         case .inbox: return .inbox
+        case .tools: return .tools
         case .music: return .music
         default: return .chat
         }
@@ -300,7 +301,7 @@ final class NotchViewModel: ObservableObject {
         if case .panel(let tab) = target, state.kind != "panel", tab == .chat || tab == .nook { app?.warmUp() }
         if case .panel(let tab) = target {
             switch tab {
-            case .chat, .agents, .inbox, .music: lastTab = tab
+            case .chat, .agents, .inbox, .tools, .music: lastTab = tab
             default: break
             }
             // Tasks belong to Agents; another tab means you moved on.
@@ -807,6 +808,7 @@ final class NotchViewModel: ObservableObject {
         case .agents: return CGSize(width: big ? 1120 : 860, height: min(chrome + (big ? 620 : 440), canvas.height))
         case .inbox: return CGSize(width: big ? 1120 : 860, height: min(chrome + (big ? 620 : 460), canvas.height))
         case .music: return CGSize(width: big ? 940 : 800, height: min(chrome + (big ? 470 : 380), canvas.height))
+        case .tools: return CGSize(width: big ? 1040 : 860, height: min(chrome + (big ? 620 : 480), canvas.height))
         case .shelf: return CGSize(width: 640, height: chrome + 180)
         case .connect: return CGSize(width: 820, height: chrome + 330)
         }
@@ -916,7 +918,7 @@ final class NotchViewModel: ObservableObject {
             return (app?.connectors.needingAttention.isEmpty ?? true) ? .rest : .waiting
         case .nook, .chat: return (app?.chat.anyBusy ?? false) ? .think : .rest
         case .inbox: return ChatsTab.unread > 0 ? .remind : .rest
-        case .music, .shelf: return .rest
+        case .music, .shelf, .tools: return .rest
         }
     }
 }

@@ -11,6 +11,13 @@ user or contributor notices, add a line under **Unreleased**. At release time th
 
 ### Added
 
+- A *Tools* tab in the notch with ten everyday helpers, each a card of its own color: a unit converter that answers
+  as you type ("5 km to mi", offline), kitchen timers (several at once, Nook says when one is done), a world clock,
+  countdowns to dates, habits with streaks, a scratch note, a clipboard history (in memory only, skipping copies a
+  password manager marks as concealed), a color picker that copies a screen color as hex, keep awake (1 h, 3 h or
+  until stopped), and the battery, with a word from Nook when it runs low or is full. Settings › Appearance › *Tools*
+  switches the clipboard history and the battery alerts off.
+
 - Nook in color: each chat app shows in its own colors (WhatsApp green, Telegram blue, Messages blue …) in the Chats
   tab, its sidebar and the notch's message cards: bubbles, a faint wash, read ticks, the unread count and the send
   button. People in a chat get a brighter palette, home's starters a color each, and Nook's default accent is a soft

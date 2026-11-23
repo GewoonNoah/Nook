@@ -88,6 +88,15 @@ extension SettingsView {
             }
 
             Section {
+                Toggle(tr("settings.tools.clipboard"), isOn: $settings.clipboardHistory)
+                Toggle(tr("settings.tools.battery"), isOn: $settings.batteryAlerts)
+            } header: {
+                Text(tr("settings.tools.title"))
+            } footer: {
+                Text(tr("settings.tools.hint"))
+            }
+
+            Section {
                 Picker(tr("settings.display.eyes"), selection: $settings.nookLook.eyes) {
                     ForEach(NookEyeStyle.allCases) { style in
                         Text(Self.title(for: style)).tag(style)

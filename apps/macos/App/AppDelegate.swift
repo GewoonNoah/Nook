@@ -10,6 +10,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
         model.start()
+        model.startTools()
         UpdateTrialRunner.startWatching()
         if let rollback = UpdateTrialRunner.rollbackToReport { AppUpdater.shared.reportRollback(rollback) }
         installStatusItem()
