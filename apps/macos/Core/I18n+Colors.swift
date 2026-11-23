@@ -1,0 +1,61 @@
+import Foundation
+
+// Texts for Nook in color: each chat app in its own colors (Settings › Appearance) and "Your day" on the home screen.
+
+let colorsTranslations: [AppLanguage: [String: String]] = [
+    .nl: [
+        "settings.appColors.title": "App-kleuren",
+        "settings.appColors.toggle": "Toon elke chat-app in zijn eigen kleuren",
+        "settings.appColors.hint": "Een WhatsApp-chat wordt groen, Telegram blauw, Berichten blauw: in de Chats-tab en in de notch. Uit, dan houdt elke chat de rustige kleuren van Nook.",
+        "home.agenda.title": "Jouw dag",
+        "home.agenda.more": "Nog %ld vandaag",
+        "home.agenda.allDay": "Hele dag",
+        "home.agenda.now": "Nu",
+        "home.agenda.inMinutes": "Over %ld min",
+        "home.agenda.open": "Openen in Agenda",
+    ],
+    .en: [
+        "settings.appColors.title": "App colors",
+        "settings.appColors.toggle": "Show each chat app in its own colors",
+        "settings.appColors.hint": "A WhatsApp chat turns green, Telegram blue, Messages blue: in the Chats tab and in the notch. Off, every chat keeps Nook's calm colors.",
+        "home.agenda.title": "Your day",
+        "home.agenda.more": "%ld more today",
+        "home.agenda.allDay": "All day",
+        "home.agenda.now": "Now",
+        "home.agenda.inMinutes": "In %ld min",
+        "home.agenda.open": "Open in Calendar",
+    ],
+    .de: [
+        "settings.appColors.title": "App-Farben",
+        "settings.appColors.toggle": "Jede Chat-App in ihren eigenen Farben zeigen",
+        "settings.appColors.hint": "Ein WhatsApp-Chat wird grün, Telegram blau, Nachrichten blau: im Chats-Tab und in der Notch. Aus, dann behält jeder Chat Nooks ruhige Farben.",
+        "home.agenda.title": "Dein Tag",
+        "home.agenda.more": "Noch %ld heute",
+        "home.agenda.allDay": "Ganztägig",
+        "home.agenda.now": "Jetzt",
+        "home.agenda.inMinutes": "In %ld Min.",
+        "home.agenda.open": "In Kalender öffnen",
+    ],
+    .fr: [
+        "settings.appColors.title": "Couleurs des apps",
+        "settings.appColors.toggle": "Afficher chaque app de discussion dans ses propres couleurs",
+        "settings.appColors.hint": "Une discussion WhatsApp devient verte, Telegram bleue, Messages bleue : dans l'onglet Discussions et dans l'encoche. Désactivé, chaque discussion garde les couleurs calmes de Nook.",
+        "home.agenda.title": "Ta journée",
+        "home.agenda.more": "Encore %ld aujourd'hui",
+        "home.agenda.allDay": "Toute la journée",
+        "home.agenda.now": "Maintenant",
+        "home.agenda.inMinutes": "Dans %ld min",
+        "home.agenda.open": "Ouvrir dans Calendrier",
+    ],
+    .es: [
+        "settings.appColors.title": "Colores de las apps",
+        "settings.appColors.toggle": "Mostrar cada app de chat con sus propios colores",
+        "settings.appColors.hint": "Un chat de WhatsApp se vuelve verde, Telegram azul, Mensajes azul: en la pestaña Chats y en el notch. Desactivado, cada chat mantiene los colores tranquilos de Nook.",
+        "home.agenda.title": "Tu día",
+        "home.agenda.more": "%ld más hoy",
+        "home.agenda.allDay": "Todo el día",
+        "home.agenda.now": "Ahora",
+        "home.agenda.inMinutes": "En %ld min",
+        "home.agenda.open": "Abrir en Calendario",
+    ],
+]

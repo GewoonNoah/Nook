@@ -57,6 +57,27 @@ extension SettingsView {
             }
 
             Section {
+                Toggle(tr("settings.appColors.toggle"), isOn: $settings.appColors)
+                // The apps' own colors, small, so the switch shows what it changes.
+                HStack(spacing: NookTheme.Spacing.sm) {
+                    ForEach(Self.appColorPreview, id: \.self) { id in
+                        let skin = ChatSkin.of(id)
+                        Circle()
+                            .fill(settings.appColors ? skin.accent : NookTheme.smoke)
+                            .frame(width: 14, height: 14)
+                            .help(MessagingApps.app(id: id)?.name ?? id)
+                            .accessibilityHidden(true)
+                    }
+                    Spacer(minLength: 0)
+                }
+                .animation(NookTheme.reveal, value: settings.appColors)
+            } header: {
+                Text(tr("settings.appColors.title"))
+            } footer: {
+                Text(tr("settings.appColors.hint"))
+            }
+
+            Section {
                 Picker(tr("settings.display.eyes"), selection: $settings.nookLook.eyes) {
                     ForEach(NookEyeStyle.allCases) { style in
                         Text(Self.title(for: style)).tag(style)
@@ -92,18 +113,23 @@ extension SettingsView {
                         settings.nookLook = .classic
                         settings.accentHex = NookTheme.defaultAccentHex
                         settings.nookWardrobe = .standard
+                        settings.appColors = true
                     }
                     .disabled(settings.nookLook == .classic && settings.accentHex == NookTheme.defaultAccentHex
-                              && settings.nookWardrobe == .standard)
+                              && settings.nookWardrobe == .standard && settings.appColors)
                 }
             }
             .listRowBackground(Color.clear)
         }
     }
 
+    /// The chat apps whose colors the "App colors" switch shows.
+    static let appColorPreview = ["whatsapp", "telegram", "messages", "messenger", "instagram", "signal", "slack",
+                                  "discord", "teams", "snapchat"]
+
     /// The accent colors offered as swatches, each with the name VoiceOver reads.
     static let accentSwatches: [(hex: UInt32, name: String)] = [
-        (NookTheme.defaultAccentHex, "settings.accent.white"), (0x8B7BFF, "settings.accent.violet"),
+        (0xF4F3F7, "settings.accent.white"), (NookTheme.defaultAccentHex, "settings.accent.violet"),
         (0x5AA9FF, "settings.accent.blue"), (0x5ED6A6, "settings.accent.mint"), (0xF2B866, "settings.accent.amber"),
         (0xEF7B73, "settings.accent.coral"), (0xFF7EB6, "settings.accent.pink"),
     ]

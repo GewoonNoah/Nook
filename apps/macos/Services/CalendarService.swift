@@ -1,5 +1,6 @@
 import Foundation
 @preconcurrency import EventKit
+import CoreGraphics
 
 struct CalEvent: Identifiable, Equatable {
     var id: String
@@ -8,6 +9,9 @@ struct CalEvent: Identifiable, Equatable {
     var end: Date
     var location: String
     var calendar: String = ""
+    /// The color of its calendar as 0xRRGGBB, as Calendar shows it; nil when the calendar has none.
+    var colorHex: UInt32? = nil
+    var allDay: Bool = false
 }
 
 struct ReminderItem: Identifiable, Equatable {
@@ -57,6 +61,15 @@ final class CalendarService {
 
     private struct StoreBox: @unchecked Sendable { let store: EKEventStore }
 
+    /// A calendar's color as 0xRRGGBB, in sRGB.
+    private nonisolated static func hex(_ color: CGColor) -> UInt32? {
+        guard let space = CGColorSpace(name: CGColorSpace.sRGB),
+              let srgb = color.converted(to: space, intent: .defaultIntent, options: nil),
+              let parts = srgb.components, parts.count >= 3 else { return nil }
+        func byte(_ value: CGFloat) -> UInt32 { UInt32(max(0, min(255, (value * 255).rounded()))) }
+        return byte(parts[0]) << 16 | byte(parts[1]) << 8 | byte(parts[2])
+    }
+
     private nonisolated static func eventList(_ store: EKEventStore, from start: Date, to end: Date) -> [CalEvent] {
         let predicate = store.predicateForEvents(withStart: start, end: end, calendars: nil)
         return store.events(matching: predicate)
@@ -68,7 +81,9 @@ final class CalendarService {
                     start: $0.startDate,
                     end: $0.endDate,
                     location: $0.location ?? "",
-                    calendar: $0.calendar?.title ?? ""
+                    calendar: $0.calendar?.title ?? "",
+                    colorHex: $0.calendar?.cgColor.flatMap(Self.hex),
+                    allDay: $0.isAllDay
                 )
             }
     }

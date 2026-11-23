@@ -303,6 +303,14 @@ final class AppSettings: ObservableObject {
             NookTheme.accentHex = accentHex
         }
     }
+    /// Each chat app in its own colors (WhatsApp green, Telegram blue …) in the Chats tab and the notch; off, every chat
+    /// keeps Nook's neutral look (Settings › Appearance).
+    @Published var appColors: Bool {
+        didSet {
+            UserDefaults.standard.set(appColors, forKey: "appColors")
+            NookPalette.appColorsEnabled = appColors
+        }
+    }
     /// Nook's appearance: eye and mouth style, gloss, glow and blush (Settings › Appearance).
     @Published var nookLook: NookLook {
         didSet {
@@ -636,6 +644,9 @@ final class AppSettings: ObservableObject {
         let storedAccent = (defaults.object(forKey: "accentHex") as? Int).map { UInt32(truncatingIfNeeded: $0) } ?? NookTheme.defaultAccentHex
         accentHex = storedAccent
         NookTheme.accentHex = storedAccent
+        let storedAppColors = defaults.object(forKey: "appColors") as? Bool ?? true
+        appColors = storedAppColors
+        NookPalette.appColorsEnabled = storedAppColors
         let storedLook = NookLook(stored: defaults.string(forKey: "nookLook"))
         nookLook = storedLook
         NookAppearance.shared.look = storedLook

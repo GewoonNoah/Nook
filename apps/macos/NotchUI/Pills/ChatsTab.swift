@@ -898,7 +898,9 @@ private struct ChatsRow: View {
                         Text(when)
                             .font(NookTheme.TextStyle.caption)
                             .monospacedDigit()
-                            .foregroundStyle(NookTheme.textTertiary)
+                            // Something new: the time takes the app's color, as a chat app marks an unread chat.
+                            .foregroundStyle(entry.read.isUnread && ChatSkin.of(entry.app) != .nook
+                                             ? ChatSkin.of(entry.app).accent : NookTheme.textTertiary)
                             .fixedSize()
                             .opacity(hovering && rowAction != nil ? 0 : 1)
                     }
@@ -913,7 +915,7 @@ private struct ChatsRow: View {
                         Spacer(minLength: NookTheme.Spacing.xs)
                         // Where it stands, the same mark for every app; your own newest message has its ticks in front.
                         if entry.showsReadMark {
-                            ChatReadMark(state: entry.read)
+                            ChatReadMark(state: entry.read, tint: ChatSkin.of(entry.app) == .nook ? nil : ChatSkin.of(entry.app).accent)
                                 .fixedSize()
                         }
                     }
@@ -1019,6 +1021,9 @@ private struct ChatsDetail: View {
 
     private var appName: String { MessagingApps.app(id: entry.app)?.name ?? entry.app }
 
+    /// The chat app's colors: its bubbles, its wash behind the messages, its send button.
+    private var skin: ChatSkin { ChatSkin.of(entry.app) }
+
     private var whatsAppChat: String? {
         if case .whatsApp(let jid) = entry.origin { return jid }
         return nil
@@ -1060,7 +1065,7 @@ private struct ChatsDetail: View {
             header
                 .padding(.bottom, NookTheme.Spacing.md)
             NookDivider()
-            ChatTranscript(bubbles: bubbles, contact: entry.name, fills: true,
+            ChatTranscript(bubbles: bubbles, contact: entry.name, fills: true, skin: skin,
                            onOpen: { open($0) }, onZoom: { zoom($0) },
                            onReply: route == nil ? nil : quote,
                            onReact: whatsAppChat != nil || linkedChat?.canReact == true ? react : nil,
@@ -1068,6 +1073,9 @@ private struct ChatsDetail: View {
                            onDelete: linkedChat?.canDelete == true ? { deleting = $0 } : nil,
                            onVote: canVote ? vote : nil, onLoadOlder: canLoadOlder ? loadOlder : nil)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+                // The app's color washes in faintly from the top, so the chat reads as that app's at a glance.
+                .background(LinearGradient(colors: [skin.wallpaper, .clear], startPoint: .top, endPoint: .bottom)
+                    .allowsHitTesting(false))
             footer
                 .padding(.top, NookTheme.Spacing.sm)
         }
@@ -1234,7 +1242,7 @@ private struct ChatsDetail: View {
                     Text(whatsAppChat == nil && linkedChat == nil && !capture.bridged.contains(entry.app)
                          ? tr("chats.fromNotifications", appName) : appName)
                         .font(NookTheme.TextStyle.detail)
-                        .foregroundStyle(NookTheme.textTertiary)
+                        .foregroundStyle(skin == .nook ? NookTheme.textTertiary : skin.accent)
                         .lineLimit(1)
                     // A group whose app lists its people: how many, and a click lists them.
                     if let members = entry.members, !members.isEmpty {
@@ -1349,6 +1357,7 @@ private struct ChatsDetail: View {
                     copyForApp()
                 }
             })
+            .skin(skin)
             .tray(entry.read.isUnread
                 ? ChatReadLine(state: entry.read, appName: appName, handoff: app.chatReadHandoff(entry),
                                markReadInNook: { app.markChatReadInNook(entry) },

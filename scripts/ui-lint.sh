@@ -26,6 +26,8 @@ cd "$(dirname "$0")/../apps/macos"
 
 OWN_COLORS=(
   "NotchUI/Theme/NookTheme.swift"
+  # Each chat app's accent, people's colors and calendar colors, named once (NookPalette, ChatSkin).
+  "NotchUI/Theme/AppPalette.swift"
   "NotchUI/Components/BrandLogo.swift"
   "NotchUI/Components/AgentLogo.swift"
   "NotchUI/Components/StatusStyleView.swift"

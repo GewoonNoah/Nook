@@ -290,7 +290,7 @@ struct CardView: View {
             NoteDetail(text: text, label: label)
         case .chat(let bubbles):
             // A message card's chat can be answered: each message can be quoted in the field, or get an emoji.
-            ChatTranscript(bubbles: bubbles, contact: card.title, onOpen: onOpen,
+            ChatTranscript(bubbles: bubbles, contact: card.title, skin: ChatSkin.of(card.appIcon ?? ""), onOpen: onOpen,
                            onZoom: { bubble in withAnimation(NookTheme.reveal) { zoomed = bubble } },
                            onReply: quoteAction, onReact: card.chatReply && card.replyCopiesTo == nil ? onReact : nil)
         }

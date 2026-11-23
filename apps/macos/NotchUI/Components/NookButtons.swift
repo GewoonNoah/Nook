@@ -230,6 +230,9 @@ struct NookIconButton: View {
     let label: String
     var filled: Bool = false
     var size: CGFloat = 34
+    /// A filled button in a color of its own (a chat app's send button) and what is drawn on it; nil keeps Nook's white.
+    var fill: Color? = nil
+    var onFill: Color? = nil
     let action: () -> Void
     @State private var hovering = false
 
@@ -237,10 +240,10 @@ struct NookIconButton: View {
         Button(action: action) {
             Image(systemName: systemName)
                 .font(NookTheme.font(size * 0.42, .semibold))
-                .foregroundStyle(filled ? NookTheme.ink : (hovering ? NookTheme.paper : NookTheme.textSecondary))
+                .foregroundStyle(filled ? (onFill ?? NookTheme.ink) : (hovering ? NookTheme.paper : NookTheme.textSecondary))
                 .frame(width: size, height: size)
                 .background(
-                    Circle().fill(filled ? NookTheme.paper : (hovering ? NookTheme.smoke : Color.clear))
+                    Circle().fill(filled ? (fill ?? NookTheme.paper) : (hovering ? NookTheme.smoke : Color.clear))
                 )
                 .hoverLift(hovering, scale: 1.03)
         }

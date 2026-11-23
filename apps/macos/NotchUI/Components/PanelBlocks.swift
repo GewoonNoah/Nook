@@ -69,16 +69,18 @@ struct NookSearchField: View {
 /// How many things wait for you: a small amber count (a tab, a list's title). Zero shows nothing.
 struct NookCountBadge: View {
     let count: Int
+    /// Amber (waiting on you) by default; a chat's row counts in its app's own color.
+    var tint: Color = NookTheme.amber
 
     var body: some View {
         if count > 0 {
-            // Amber numerals on a faint wash, not a solid amber pill: it tells without shouting.
+            // Tinted numerals on a faint wash, not a solid pill: it tells without shouting.
             Text("\(count)")
                 .font(NookTheme.rounded(10, .semibold))
-                .foregroundStyle(NookTheme.amber)
+                .foregroundStyle(tint)
                 .padding(.horizontal, NookTheme.Spacing.xs)
                 .frame(minWidth: 16, minHeight: 16)
-                .background(Capsule().fill(NookTheme.amber.opacity(0.14)))
+                .background(Capsule().fill(tint.opacity(0.16)))
         }
     }
 }

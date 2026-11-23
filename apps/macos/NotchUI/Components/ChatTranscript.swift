@@ -16,6 +16,8 @@ struct ChatTranscript: View {
     /// Takes all the room it gets and scrolls inside it (the Chats tab), instead of growing with the messages up to
     /// the card's height.
     var fills = false
+    /// The colors of the chat's app (WhatsApp green, Telegram blue …): its bubbles, its wash and its read ticks.
+    var skin: ChatSkin = .nook
     var onOpen: (ChatBubble) -> Void = { _ in }
     var onZoom: (ChatBubble) -> Void = { _ in }
     /// Answering one message (the field then quotes it). Nil where the chat cannot be answered: no reply button.
@@ -139,6 +141,7 @@ struct ChatTranscript: View {
         let byID = Dictionary(bubbles.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         let rows = entries.map { Row(id: ChatTimeline.id(of: $0), entry: $0) }
         let top = rows.first?.id
+        let skin = skin
         return VStack(spacing: 0) {
             ForEach(rows) { row in
                 switch row.entry {
@@ -146,7 +149,7 @@ struct ChatTranscript: View {
                     ChatDayDivider(label: label)
                 case .message(_, let first, _):
                     if let bubble = byID[row.id] {
-                        ChatBubbleView(bubble: bubble, first: first, newest: bubble.id == bubbles.last?.id,
+                        ChatBubbleView(bubble: bubble, first: first, newest: bubble.id == bubbles.last?.id, skin: skin,
                                        onOpen: { onOpen(bubble) }, onZoom: { onZoom(bubble) },
                                        onReply: replyAction(bubble), onReact: reactAction(bubble),
                                        onVote: voteAction(bubble))
@@ -229,6 +232,7 @@ private struct ChatBubbleView: View, Equatable {
     /// The first of a run by one person: their name above it (in a group) and the bubble's corner points at them.
     let first: Bool
     let newest: Bool
+    var skin: ChatSkin = .nook
     let onOpen: () -> Void
     let onZoom: () -> Void
     let onReply: (() -> Void)?
@@ -246,7 +250,7 @@ private struct ChatBubbleView: View, Equatable {
 
     /// The actions only count by whether they are there: they do the same for the same bubble.
     static func == (a: ChatBubbleView, b: ChatBubbleView) -> Bool {
-        a.bubble == b.bubble && a.first == b.first && a.newest == b.newest
+        a.bubble == b.bubble && a.first == b.first && a.newest == b.newest && a.skin == b.skin
             && (a.onReply == nil) == (b.onReply == nil) && (a.onReact == nil) == (b.onReact == nil)
             && (a.onVote == nil) == (b.onVote == nil)
     }
@@ -269,13 +273,14 @@ private struct ChatBubbleView: View, Equatable {
             Text(bubble.time)
                 .font(NookTheme.TextStyle.caption)
                 .monospacedDigit()
-                .foregroundStyle(NookTheme.textTertiary)
+                // On a colored bubble of your own the grey time would sink into the fill.
+                .foregroundStyle(bubble.fromMe && skin != .nook ? NookTheme.paper.opacity(0.62) : NookTheme.textTertiary)
             if let ticks = bubble.ticks {
                 if bubble.readers.isEmpty {
-                    TicksView(ticks: ticks)
+                    TicksView(ticks: ticks, readTint: skin.readTick)
                 } else {
                     // In a group: a click on the ticks says who read it, who has it, and who does not yet.
-                    Button { showingInfo = true } label: { TicksView(ticks: ticks) }
+                    Button { showingInfo = true } label: { TicksView(ticks: ticks, readTint: skin.readTick) }
                         .buttonStyle(.plain)
                         .pointerStyle(.link)
                         .help(tr("chat.info.title"))
@@ -410,7 +415,7 @@ private struct ChatBubbleView: View, Equatable {
         }
         .padding(.horizontal, bare ? NookTheme.Spacing.xs : NookTheme.Spacing.lg)
         .padding(.vertical, bare ? NookTheme.Spacing.xxs : NookTheme.Spacing.md)
-        .background(shape.fill(bare ? Color.clear : (bubble.fromMe ? NookTheme.mint.opacity(0.13) : NookTheme.smoke)))
+        .background(shape.fill(bare ? Color.clear : (bubble.fromMe ? skin.mine : skin.theirs)))
     }
 
     /// Round, with the first bubble of a run pointing at its writer the way a chat app's tail does.
@@ -617,6 +622,8 @@ enum ChatLinks {
 /// In a group whose app says it per person, a click on them opens `MessageInfoView`.
 struct TicksView: View {
     let ticks: BubbleTicks
+    /// The two ticks of a read message: blue as on the phone, or the chat app's own color.
+    var readTint: Color = NookTheme.blue
 
     var body: some View {
         Group {
@@ -647,7 +654,7 @@ struct TicksView: View {
 
     private var color: Color {
         switch ticks {
-        case .read: return NookTheme.blue
+        case .read: return readTint
         case .failed: return NookTheme.coral
         case .pending, .sent, .delivered: return NookTheme.textTertiary
         }

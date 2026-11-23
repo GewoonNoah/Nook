@@ -143,11 +143,10 @@ struct ChatPersonBadge: View {
     let name: String
     var size: CGFloat = 22
 
-    private static let colors: [Color] = [NookTheme.mint, NookTheme.blue, NookTheme.violet, NookTheme.music]
-
     /// Each person's own color in a chat, the same every time: their name in a group's bubbles, their initials.
     static func tint(for name: String) -> Color {
-        colors[ChatTimeline.colorIndex(for: name, count: colors.count)]
+        let colors = NookPalette.people
+        return colors[ChatTimeline.colorIndex(for: name, count: colors.count)]
     }
 
     var body: some View {

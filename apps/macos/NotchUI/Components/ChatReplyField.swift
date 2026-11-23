@@ -59,6 +59,9 @@ struct ChatReplyField: View {
     private var trayContent: AnyView?
     private var hasExtra = false
     private var pasted: (() -> Bool)?
+    /// The send button in the chat app's own color; nil keeps Nook's.
+    private var sendFill: Color?
+    private var onSendFill: Color?
 
     init(text: Binding<String>, notice: Binding<String?>, focus: FocusState<Bool>.Binding, placeholder: String,
          sendSymbol: String, sendLabel: String, readyNotice: String, outgoing: ChatSending? = nil, recipient: String? = nil,
@@ -94,6 +97,16 @@ struct ChatReplyField: View {
         copy.leadingAccessory = AnyView(leading())
         copy.aboveAccessory = AnyView(above())
         copy.idleAccessory = AnyView(idle())
+        return copy
+    }
+
+    /// The send button in a chat app's colors (`ChatSkin`); Nook's own look keeps the white button.
+    func skin(_ skin: ChatSkin) -> Self {
+        var copy = self
+        if skin != .nook {
+            copy.sendFill = skin.accent
+            copy.onSendFill = skin.onAccent
+        }
         return copy
     }
 
@@ -241,7 +254,8 @@ struct ChatReplyField: View {
             } else if empty, !busy, let idleAccessory {
                 idleAccessory
             } else {
-                NookIconButton(systemName: asksNook ? "sparkles" : sendSymbol, label: buttonLabel, filled: true, size: 28) { submit() }
+                NookIconButton(systemName: asksNook ? "sparkles" : sendSymbol, label: buttonLabel, filled: true, size: 28,
+                               fill: asksNook ? nil : sendFill, onFill: asksNook ? nil : onSendFill) { submit() }
                     .disabled(busy || empty)
                     .help(buttonLabel + (asksNook ? " (↩)" : " (⌘↩)"))
             }

@@ -16,6 +16,8 @@ final class UIConsistencyTests: XCTestCase {
     /// chart series, and palettes that are named once and used through their name.
     private static let ownColors: Set<String> = [
         "NotchUI/Theme/NookTheme.swift",
+        // Each chat app's accent, people's colors and calendar colors, named once (NookPalette, ChatSkin).
+        "NotchUI/Theme/AppPalette.swift",
         "NotchUI/Components/BrandLogo.swift",
         "NotchUI/Components/AgentLogo.swift",
         "NotchUI/Components/StatusStyleView.swift",

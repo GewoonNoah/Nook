@@ -32,11 +32,13 @@ enum ChatsView: String, CaseIterable, Identifiable {
 /// tick for read in Nook, two mint ticks for read in the app too. The same marks the sidebar's views and legend use.
 struct ChatReadMark: View {
     let state: ChatReadState
+    /// The count in the chat app's own color (`ChatSkin.accent`); nil keeps Nook's amber.
+    var tint: Color? = nil
 
     var body: some View {
         switch state {
         case .unread(let count):
-            NookCountBadge(count: count)
+            NookCountBadge(count: count, tint: tint ?? NookTheme.amber)
         case .readInNook:
             ChatTicks(count: 1, tint: NookTheme.textTertiary)
                 .help(tr("chats.legend.readInNook"))
