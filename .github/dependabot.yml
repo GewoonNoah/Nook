@@ -1,8 +1,8 @@
 version: 2
 # Every ecosystem checks monthly and groups its version updates into one pull request (and one CI run) per month.
 # Security updates are not grouped, so they still arrive one by one as soon as an advisory is published.
-# The Swift packages of the macOS app live in apps/macos/project.yml (XcodeGen), which Dependabot cannot read, and
-# packages/core and packages/protocol have no dependencies; Swift updates stay manual for now.
+# packages/core and packages/protocol have no dependencies, and the iPhone companion's packages live in
+# apps/ios/project.yml (XcodeGen), which Dependabot cannot read; Swift updates stay manual for now.
 updates:
   - package-ecosystem: github-actions
     # The root workflows and the composite actions in .github/actions.

@@ -1,4 +1,6 @@
-# Shared UI Components (macOS)
+# Shared UI Components (former macOS app)
+
+> **Archived.** These components belonged to the macOS app, which was removed from the repository (`apps/macos` is in the git history). They stay here as the design reference for the Tauri app's interface.
 
 The notch, the Workspace, and Settings share one visual language. Before writing a view modifier chain by hand, check
 whether one of the building blocks below already does it; when a pattern shows up a third time, add it here instead of

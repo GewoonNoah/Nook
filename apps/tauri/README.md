@@ -2,7 +2,7 @@
 
 One app for three platforms, built with [Tauri 2](https://tauri.app). The same Nook as on the Mac: chat with your own
 or an external AI, Nooks, memory, plans that only do something after you press **Run**, your coding agents, and your
-connectors. The macOS app in [`apps/macos`](../macos) is the specification: names, behavior, and copy follow it.
+connectors. The former macOS app (removed from the repository, still in its git history) was the specification: names, behavior, and copy follow it.
 
 > **Status:** early version. Everything from the Mac app has either been ported or is on the list in
 > [docs/TAURI.md](../../docs/TAURI.md) with a reason. On Linux it has been tested in the app; Windows code compiles but

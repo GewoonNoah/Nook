@@ -1,8 +1,5 @@
 # Area labels for pull requests, by the paths they change (used by workflows/labeler.yml with actions/labeler).
 # The platform labels (windows, linux, android) only follow platform-specific folders; shared Tauri code gets "area: tauri".
-"area: macos":
-  - changed-files:
-      - any-glob-to-any-file: "apps/macos/**"
 "area: ios":
   - changed-files:
       - any-glob-to-any-file: "apps/ios/**"
@@ -24,9 +21,6 @@
 "area: protocol":
   - changed-files:
       - any-glob-to-any-file: "packages/**"
-"area: i18n":
-  - changed-files:
-      - any-glob-to-any-file: "apps/macos/Core/I18n*.swift"
 "area: ci":
   - changed-files:
       - any-glob-to-any-file: [".github/**", "scripts/**"]

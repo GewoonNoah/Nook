@@ -48,9 +48,6 @@
   description: Leave this pull request out of the release notes
 
 # Area: which part of the monorepo
-- name: "area: macos"
-  color: "1d76db"
-  description: The macOS app (apps/macos)
 - name: "area: ios"
   color: "1d76db"
   description: Nook Companion for iPhone (apps/ios)

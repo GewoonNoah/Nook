@@ -14,4 +14,4 @@ Sources/
   PromptLink.swift        `nook://prompt` links that prefill a new session's draft, on the Mac and the iPhone (tested in PromptLinkTests)
 ```
 
-`apps/macos/project.yml` and `apps/ios/project.yml` compile these source files directly into their respective targets. Keep all files portable (`Foundation`-only), with the sole exception of `CompanionSeal.swift` which uses `CryptoKit` on Apple platforms.
+`apps/ios/project.yml` compiles these source files directly into its target. Keep all files portable (`Foundation`-only), with the sole exception of `CompanionSeal.swift` which uses `CryptoKit` on Apple platforms.

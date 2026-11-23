@@ -5,8 +5,6 @@ DerivedData/
 build/
 .build/
 *.xcworkspace
-apps/macos/App/Info.plist
-apps/macos/App/Nook.entitlements
 .swiftpm/
 *.sqlite
 *.sqlite-*
@@ -25,11 +23,8 @@ apps/ios/NookActivity/Info.plist
 apps/ios/NookNotifications/Info.plist
 apps/ios/NookNotifications/*.entitlements
 
-# Local code signing identity (written by apps/macos/Config/local-signing.sh)
-apps/macos/Config/Signing.local.xcconfig
 
 # TDLib for the Telegram bridge, built by scripts/build-tdlib.sh
-apps/macos/Vendor/
 
 # Previews and drafts made for the user by coding agents (see AGENTS.md §5)
 .scratch/

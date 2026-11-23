@@ -9,28 +9,11 @@ user or contributor notices, add a line under **Unreleased**. At release time th
 
 ## Unreleased
 
+### Removed
+
+- The macOS app (`apps/macos`) and its CI, release workflow, and scripts. It stays in the git history. The iPhone companion keeps its own copy of the AI brand marks (`apps/ios/Shared/BrandLogo.swift`).
+
 ### Added
-
-- A *Tools* tab in the notch with ten everyday helpers, each a card of its own color: a unit converter that answers
-  as you type ("5 km to mi", offline), kitchen timers (several at once, Nook says when one is done), a world clock,
-  countdowns to dates, habits with streaks, a scratch note, a clipboard history (in memory only, skipping copies a
-  password manager marks as concealed), a color picker that copies a screen color as hex, keep awake (1 h, 3 h or
-  until stopped), and the battery, with a word from Nook when it runs low or is full. Settings › Appearance › *Tools*
-  switches the clipboard history and the battery alerts off.
-
-- Nook in color: each chat app shows in its own colors (WhatsApp green, Telegram blue, Messages blue …) in the Chats
-  tab, its sidebar and the notch's message cards: bubbles, a faint wash, read ticks, the unread count and the send
-  button. People in a chat get a brighter palette, home's starters a color each, and Nook's default accent is a soft
-  violet. Settings › Appearance › *App colors* turns the app colors off.
-- *Your day* on home: a rail across today's calendar in each calendar's color with a marker for now, the next events
-  with "In 5 min", how long you are free or busy, a look at tomorrow once today is done, and a *Join* button for a
-  Meet, Zoom, Teams, Webex, Whereby or FaceTime call that is about to start (also in the menu bar).
-- *This week* on home: the next seven days with a dot per event in its calendar's color.
-- Focus sessions: 25, 50 or 90 minutes from home's *Focus* card, with a countdown ring (also on the idle notch), +5
-  min, the time left in the menu bar, and a celebration with a breather when the time is up.
-- A reminder next to the notch two minutes before a video call, with *Join*, and on the idle notch the minutes until
-  the next event once it is ten minutes away. Settings › Appearance › *Home* turns each new home section and the
-  reminder off. Teal and orange join the accent colors.
 
 - Downloaded builds (the release .dmg/.zip) update themselves from GitHub Releases through the footer's Update
   button: Nook downloads the release's .zip, checks its Ed25519 signature against the key it carries, and installs it

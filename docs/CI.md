@@ -1,12 +1,13 @@
 # CI
 
+> The macOS build and release workflows (`build.yml`, `release.yml`) were removed together with the macOS app. The sections about them below are kept for the iPhone companion's macOS jobs and as history.
+
 Nook's CI runs on GitHub Actions. The macOS runners are the scarce resource: the repository gets only a handful at a
 time, and every queued macOS job makes the next pull request wait. The workflows are built to start one only when it
 can tell us something new.
 
 | Workflow | Runs on | When |
 |---|---|---|
-| `build.yml` | ubuntu (UI lint), then macOS (build + `NookTests`) | `apps/macos`, `packages/protocol`, `scripts/ui-lint.sh` |
 | `ios.yml` | ubuntu (gate), then macOS (Companion build) | `apps/ios`, `packages/protocol` |
 | `packages.yml` | ubuntu, then macOS (`swift test` of `packages/core`) | `packages/core` |
 | `relay.yml` | ubuntu, seconds | `apps/relay` (the companion relay's tests) |
