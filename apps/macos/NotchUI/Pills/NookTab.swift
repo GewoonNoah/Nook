@@ -173,6 +173,10 @@ struct NookChatView: View {
                     AgendaStrip(events: app.upcoming, limit: compact ? 2 : 3, tomorrow: true)
                 }
 
+                // A focus session in one click, and its countdown while one runs.
+                homeSection(tr("focus.section"))
+                FocusCard()
+
                 if !items.isEmpty {
                     homeSection(tr("home.section.forYou"))
                     VStack(spacing: 0) {
