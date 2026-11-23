@@ -11,6 +11,17 @@ user or contributor notices, add a line under **Unreleased**. At release time th
 
 ### Added
 
+- Nook in color: each chat app shows in its own colors (WhatsApp green, Telegram blue, Messages blue …) in the Chats
+  tab, its sidebar and the notch's message cards: bubbles, a faint wash, read ticks, the unread count and the send
+  button. People in a chat get a brighter palette, home's starters a color each, and Nook's default accent is a soft
+  violet. Settings › Appearance › *App colors* turns the app colors off.
+- *Your day* on home: a rail across today's calendar in each calendar's color with a marker for now, the next events
+  with "In 5 min", how long you are free or busy, a look at tomorrow once today is done, and a *Join* button for a
+  Meet, Zoom, Teams, Webex, Whereby or FaceTime call that is about to start (also in the menu bar).
+- *This week* on home: the next seven days with a dot per event in its calendar's color.
+- Focus sessions: 25, 50 or 90 minutes from home's *Focus* card, with a countdown ring, +5 min, the time left in the
+  menu bar, and a celebration with a breather when the time is up.
+
 - Downloaded builds (the release .dmg/.zip) update themselves from GitHub Releases through the footer's Update
   button: Nook downloads the release's .zip, checks its Ed25519 signature against the key it carries, and installs it
   (`docs/UPDATES.md`, "Release builds"). The release workflow signs the .zip when `NOOK_UPDATE_SIGNING_KEY` is set.

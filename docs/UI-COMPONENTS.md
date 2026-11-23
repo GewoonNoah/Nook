@@ -21,6 +21,8 @@ copying it again.
 | `NookTheme.Spacing.xxs … xxxl` | Padding and stack spacing on a 4 pt grid: 2, 4, 6, 8, 12, 16, 24, 32 (`xxxl` between the sections of a page) |
 | `NookTheme.open`, `close`, `swap`, `hover`, `reveal`, `scroll` | Animations: opening and closing the notch, switching tabs, hover feedback, showing or hiding part of a panel (a section, a preview, a selection), and scrolling to a line. Never an inline `.easeOut(duration:)` |
 | `.hoverLift(_:scale:)` | The shared hover lift of buttons and chips |
+| `ChatSkin.of(_:)` (`NotchUI/Theme/AppPalette.swift`) | A chat app's colors: `accent` (unread count, send button, the app's name in a chat's header), `mine` / `theirs` bubbles, the `wallpaper` wash and `readTick`. `.nook` with Settings › Appearance › App colors off. Only the accent comes from the app; layout and shapes stay Nook's |
+| `NookPalette.people`, `events`, `eventColor(hex:calendar:)`, `meeting(_:)`, `color(for:in:)` | People's colors in a chat, calendar colors for events without one, a video call service's Join color, and a stable pick by name |
 
 Workspace views use the `WS` palette in `NotchUI/Workspace/WorkspaceComponents.swift`, which is built from these
 tokens (`WS.background` is `NookTheme.canvas`, `WS.sidebar` is `NookTheme.surface`).
@@ -152,7 +154,7 @@ the Tauri app. Use it whenever an action ends and its own view does not stay to 
 | `NookSearchField` | `PanelBlocks.swift` | The one search field (panel lists, Settings rows, menus, the command palette): magnifying glass, text, a clear button, Escape clears and then calls `onEscape`. `panel`, `inline` (in a Settings form or a menu) and `large` (a palette). Never build a search field by hand |
 | `QRCodeView`, `QRCode` | `QRCode.swift` | The one QR code for a phone to scan (linking a chat app, WhatsApp, pairing the companion): crisp pixels on a light card, with a label for VoiceOver. Never draw a QR image by hand |
 | `PanelListHeader`, `PanelNewButton` | `PanelBlocks.swift` | The title row on top of every tab's list (Nook, Agents, Chats, Pull requests): name, `NookCountBadge`, the list's actions; `PanelNewButton` is the "new" in it, lit while the new one is open |
-| `NookCountBadge` | `PanelBlocks.swift` | How many wait for you: a small amber count, on a tab or a list title |
+| `NookCountBadge` | `PanelBlocks.swift` | How many wait for you: a small amber count, on a tab or a list title; `tint` gives a chat row its app's color |
 | `NookFilterChip` | `PanelBlocks.swift` | One chip in a row of filters ("All", "Sessions 4"): a quiet capsule, filled with the accent when chosen, with an optional count. Search everything uses it for its kinds |
 | `NookSectionLabel` | `PanelBlocks.swift` | A group's name in a list or on a page ("Pinned", "For you"), lined up with the rows under it |
 | `NookDivider` | `PanelBlocks.swift` | The one line between rows or regions, horizontal (with an `inset`) or `vertical` |
