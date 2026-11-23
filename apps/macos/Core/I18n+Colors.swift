@@ -4,6 +4,8 @@ import Foundation
 
 let colorsTranslations: [AppLanguage: [String: String]] = [
     .nl: [
+        "settings.accent.teal": "Petrol",
+        "settings.accent.orange": "Oranje",
         "home.week.title": "Deze week",
         "home.week.free": "%@: niets gepland",
         "home.week.events": "%@: %ld afspraken",
@@ -36,6 +38,8 @@ let colorsTranslations: [AppLanguage: [String: String]] = [
         "home.agenda.open": "Openen in Agenda",
     ],
     .en: [
+        "settings.accent.teal": "Teal",
+        "settings.accent.orange": "Orange",
         "home.week.title": "This week",
         "home.week.free": "%@: nothing planned",
         "home.week.events": "%@: %ld events",
@@ -68,6 +72,8 @@ let colorsTranslations: [AppLanguage: [String: String]] = [
         "home.agenda.open": "Open in Calendar",
     ],
     .de: [
+        "settings.accent.teal": "Petrol",
+        "settings.accent.orange": "Orange",
         "home.week.title": "Diese Woche",
         "home.week.free": "%@: nichts geplant",
         "home.week.events": "%@: %ld Termine",
@@ -100,6 +106,8 @@ let colorsTranslations: [AppLanguage: [String: String]] = [
         "home.agenda.open": "In Kalender öffnen",
     ],
     .fr: [
+        "settings.accent.teal": "Sarcelle",
+        "settings.accent.orange": "Orange",
         "home.week.title": "Cette semaine",
         "home.week.free": "%@ : rien de prévu",
         "home.week.events": "%@ : %ld événements",
@@ -132,6 +140,8 @@ let colorsTranslations: [AppLanguage: [String: String]] = [
         "home.agenda.open": "Ouvrir dans Calendrier",
     ],
     .es: [
+        "settings.accent.teal": "Verde azulado",
+        "settings.accent.orange": "Naranja",
         "home.week.title": "Esta semana",
         "home.week.free": "%@: nada previsto",
         "home.week.events": "%@: %ld eventos",

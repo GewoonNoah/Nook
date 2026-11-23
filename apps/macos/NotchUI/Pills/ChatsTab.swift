@@ -966,8 +966,10 @@ struct ChatsAvatar: View {
                 .scaledToFill()
                 .clipShape(Circle())
         } else {
+            // A soft gradient of their color, as a chat app gives a person without a photo.
             Circle()
-                .fill(tint.opacity(0.16))
+                .fill(LinearGradient(colors: [tint.opacity(0.34), tint.opacity(0.16)], startPoint: .topLeading,
+                                     endPoint: .bottomTrailing))
                 .overlay(
                     Text(WAJID.initials(name))
                         .font(NookTheme.rounded(size * 0.36, .semibold))

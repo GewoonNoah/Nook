@@ -132,6 +132,7 @@ extension SettingsView {
         (0xF4F3F7, "settings.accent.white"), (NookTheme.defaultAccentHex, "settings.accent.violet"),
         (0x5AA9FF, "settings.accent.blue"), (0x5ED6A6, "settings.accent.mint"), (0xF2B866, "settings.accent.amber"),
         (0xEF7B73, "settings.accent.coral"), (0xFF7EB6, "settings.accent.pink"),
+        (0x4FD1C5, "settings.accent.teal"), (0xF59E4C, "settings.accent.orange"),
     ]
 
     /// Nook large and alive, with the moods underneath to see how each one looks.
