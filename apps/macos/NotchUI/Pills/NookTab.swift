@@ -165,23 +165,26 @@ struct NookChatView: View {
                 .padding(.horizontal, NookTheme.Spacing.xxs)
 
                 // Today's calendar, in its colors, before what needs you; once today is done, a look at tomorrow.
-                if !AgendaStrip.left(app.upcoming, now: Date()).isEmpty {
+                if app.settings.homeAgenda, !AgendaStrip.left(app.upcoming, now: Date()).isEmpty {
                     homeSection(tr("home.agenda.title"))
                     AgendaStrip(events: app.upcoming, limit: compact ? 2 : 3)
-                } else if !AgendaStrip.tomorrow(app.upcoming, now: Date()).isEmpty {
+                } else if app.settings.homeAgenda, !AgendaStrip.tomorrow(app.upcoming, now: Date()).isEmpty {
                     homeSection(tr("home.agenda.tomorrow"))
                     AgendaStrip(events: app.upcoming, limit: compact ? 2 : 3, tomorrow: true)
                 }
 
                 // The coming week at a glance, where there is room for it.
-                if !compact, app.calendar.hasEventAccess {
+                if !compact, app.settings.homeAgenda, app.calendar.hasEventAccess {
                     homeSection(tr("home.week.title"))
                     WeekStrip()
                 }
 
                 // A focus session in one click, and its countdown while one runs.
-                homeSection(tr("focus.section"))
-                FocusCard()
+                // Kept while one runs, so a session started before the switch went off can still be stopped.
+                if app.settings.homeFocus || FocusTimer.shared.isRunning {
+                    homeSection(tr("focus.section"))
+                    FocusCard()
+                }
 
                 if !items.isEmpty {
                     homeSection(tr("home.section.forYou"))

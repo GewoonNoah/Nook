@@ -311,6 +311,18 @@ final class AppSettings: ObservableObject {
             NookPalette.appColorsEnabled = appColors
         }
     }
+    /// Home shows "Your day" and "This week" from the calendar (Settings › Appearance › Home).
+    @Published var homeAgenda: Bool {
+        didSet { UserDefaults.standard.set(homeAgenda, forKey: "homeAgenda") }
+    }
+    /// Home shows the Focus card.
+    @Published var homeFocus: Bool {
+        didSet { UserDefaults.standard.set(homeFocus, forKey: "homeFocus") }
+    }
+    /// Nook says so two minutes before a video call, with Join.
+    @Published var callReminders: Bool {
+        didSet { UserDefaults.standard.set(callReminders, forKey: "callReminders") }
+    }
     /// Nook's appearance: eye and mouth style, gloss, glow and blush (Settings › Appearance).
     @Published var nookLook: NookLook {
         didSet {
@@ -647,6 +659,9 @@ final class AppSettings: ObservableObject {
         let storedAppColors = defaults.object(forKey: "appColors") as? Bool ?? true
         appColors = storedAppColors
         NookPalette.appColorsEnabled = storedAppColors
+        homeAgenda = defaults.object(forKey: "homeAgenda") as? Bool ?? true
+        homeFocus = defaults.object(forKey: "homeFocus") as? Bool ?? true
+        callReminders = defaults.object(forKey: "callReminders") as? Bool ?? true
         let storedLook = NookLook(stored: defaults.string(forKey: "nookLook"))
         nookLook = storedLook
         NookAppearance.shared.look = storedLook

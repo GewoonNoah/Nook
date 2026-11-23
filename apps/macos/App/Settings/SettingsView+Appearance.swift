@@ -78,6 +78,16 @@ extension SettingsView {
             }
 
             Section {
+                Toggle(tr("settings.home.agenda"), isOn: $settings.homeAgenda)
+                Toggle(tr("settings.home.focus"), isOn: $settings.homeFocus)
+                Toggle(tr("settings.home.callReminders"), isOn: $settings.callReminders)
+            } header: {
+                Text(tr("settings.home.title"))
+            } footer: {
+                Text(tr("settings.home.hint"))
+            }
+
+            Section {
                 Picker(tr("settings.display.eyes"), selection: $settings.nookLook.eyes) {
                     ForEach(NookEyeStyle.allCases) { style in
                         Text(Self.title(for: style)).tag(style)

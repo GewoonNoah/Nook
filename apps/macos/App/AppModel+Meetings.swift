@@ -41,7 +41,7 @@ final class CallReminder {
 extension AppModel {
     /// "Team meeting starts in 2 min" next to the notch, with Join.
     func remindToJoin(_ event: CalEvent) {
-        guard let meeting = event.meeting, event.start > Date().addingTimeInterval(-60) else { return }
+        guard settings.callReminders, let meeting = event.meeting, event.start > Date().addingTimeInterval(-60) else { return }
         let minutes = max(Int((event.start.timeIntervalSinceNow / 60).rounded()), 0)
         let line = minutes > 0 ? tr("call.soon", event.title, minutes) : tr("call.now", event.title)
         let moment = NookMoment(id: "call-\(event.id)", line: line, mood: .remind, action: .join(meeting.url),

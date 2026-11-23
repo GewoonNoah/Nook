@@ -4,6 +4,11 @@ import Foundation
 
 let colorsTranslations: [AppLanguage: [String: String]] = [
     .nl: [
+        "settings.home.title": "Startscherm",
+        "settings.home.agenda": "Jouw dag en Deze week",
+        "settings.home.focus": "Focus-kaart",
+        "settings.home.callReminders": "Herinner me 2 minuten voor een videogesprek",
+        "settings.home.hint": "Jouw dag en Deze week lezen je agenda's op deze Mac. De herinnering komt in de notch, met Deelnemen, en zwijgt in de stille modus.",
         "notch.minutesShort": "%ldm",
         "call.soon": "%@ begint over %ld min",
         "call.now": "%@ begint nu",
@@ -41,6 +46,11 @@ let colorsTranslations: [AppLanguage: [String: String]] = [
         "home.agenda.open": "Openen in Agenda",
     ],
     .en: [
+        "settings.home.title": "Home",
+        "settings.home.agenda": "Your day and This week",
+        "settings.home.focus": "Focus card",
+        "settings.home.callReminders": "Remind me 2 minutes before a video call",
+        "settings.home.hint": "Your day and This week read the calendars on this Mac. The reminder shows in the notch, with Join, and keeps quiet in quiet mode.",
         "notch.minutesShort": "%ldm",
         "call.soon": "%@ starts in %ld min",
         "call.now": "%@ starts now",
@@ -78,6 +88,11 @@ let colorsTranslations: [AppLanguage: [String: String]] = [
         "home.agenda.open": "Open in Calendar",
     ],
     .de: [
+        "settings.home.title": "Startseite",
+        "settings.home.agenda": "Dein Tag und Diese Woche",
+        "settings.home.focus": "Fokus-Karte",
+        "settings.home.callReminders": "2 Minuten vor einem Videoanruf erinnern",
+        "settings.home.hint": "Dein Tag und Diese Woche lesen die Kalender auf diesem Mac. Die Erinnerung erscheint in der Notch, mit Beitreten, und schweigt im Ruhemodus.",
         "notch.minutesShort": "%ldm",
         "call.soon": "%@ beginnt in %ld Min.",
         "call.now": "%@ beginnt jetzt",
@@ -115,6 +130,11 @@ let colorsTranslations: [AppLanguage: [String: String]] = [
         "home.agenda.open": "In Kalender öffnen",
     ],
     .fr: [
+        "settings.home.title": "Accueil",
+        "settings.home.agenda": "Ta journée et Cette semaine",
+        "settings.home.focus": "Carte Concentration",
+        "settings.home.callReminders": "Me rappeler 2 minutes avant un appel vidéo",
+        "settings.home.hint": "Ta journée et Cette semaine lisent les calendriers de ce Mac. Le rappel s'affiche dans l'encoche, avec Rejoindre, et se tait en mode silencieux.",
         "notch.minutesShort": "%ldm",
         "call.soon": "%@ commence dans %ld min",
         "call.now": "%@ commence maintenant",
@@ -152,6 +172,11 @@ let colorsTranslations: [AppLanguage: [String: String]] = [
         "home.agenda.open": "Ouvrir dans Calendrier",
     ],
     .es: [
+        "settings.home.title": "Inicio",
+        "settings.home.agenda": "Tu día y Esta semana",
+        "settings.home.focus": "Tarjeta de enfoque",
+        "settings.home.callReminders": "Recordarme 2 minutos antes de una videollamada",
+        "settings.home.hint": "Tu día y Esta semana leen los calendarios de este Mac. El recordatorio aparece en el notch, con Unirse, y se calla en el modo silencioso.",
         "notch.minutesShort": "%ldm",
         "call.soon": "%@ empieza en %ld min",
         "call.now": "%@ empieza ahora",
