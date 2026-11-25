@@ -9,6 +9,10 @@ user or contributor notices, add a line under **Unreleased**. At release time th
 
 ## Unreleased
 
+### Removed
+
+- The macOS app (`apps/macos`) and its CI, release workflow, and scripts. It stays in the git history. The iPhone companion keeps its own copy of the AI brand marks (`apps/ios/Shared/BrandLogo.swift`).
+
 ### Added
 
 - Downloaded builds (the release .dmg/.zip) update themselves from GitHub Releases through the footer's Update

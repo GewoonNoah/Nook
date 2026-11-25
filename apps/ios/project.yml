@@ -25,9 +25,6 @@ targets:
       - path: NookCompanion
       - path: Shared
       - path: ../../packages/protocol/Sources
-      # The agents' and models' real marks, drawn in code, shared with the Mac app so both show the same logos.
-      - path: ../macos/NotchUI/Components/BrandLogo.swift
-        group: Shared from the Mac
     dependencies:
       - target: NookActivity
       - target: NookNotifications

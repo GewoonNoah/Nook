@@ -6,7 +6,7 @@ import AppKit
 // The real marks of the AI brands Nook talks to (Claude, OpenAI, Gemini, Mistral, Ollama, Grok, Groq, OpenRouter, DeepSeek,
 // Qwen, Kimi, LM Studio, Meta, Gemma, OpenCode, Cursor), as vector paths so they stay sharp at any size and need no image assets.
 // The marks belong to their owners and are used here only to say which model or agent is meant.
-// The iPhone companion compiles this file too (apps/ios/project.yml), so what needs AppKit stays behind `os(macOS)`.
+// Part of the iPhone companion (it came from the former Mac app); what needs AppKit stays behind `os(macOS)`.
 
 enum BrandLogo: String, CaseIterable {
     case claude, openai, gemini, mistral, ollama, grok, groq, openrouter, deepseek, qwen, kimi, lmstudio, meta, gemma, opencode, cursor
